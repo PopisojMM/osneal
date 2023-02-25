@@ -2,6 +2,8 @@
 {% load static %}
 
 {% block cuerpo %}
+<a href="{% url 'mascotas:crear' %}" type="button" class="btn btn-primary align-item-middle mt-5">Crear mascota</a>
+
     <div class="container-fluid mt-5 text-center mx-auto">
 
         {% for m  in mascotas %}

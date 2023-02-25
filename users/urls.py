@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.urls import path
-from .views import Login
+from .views import InicarSesion,CerrarSesion,buscar_usuario
 
 app_name = 'users'
 
 urlpatterns = [
-    path('login/',Login.as_view(),name='login'),
+    path('iniciar-sesion/',InicarSesion.as_view(),name='iniciar-sesion'),
+    path('salir/',CerrarSesion.as_view(),name='salir'),
 ]

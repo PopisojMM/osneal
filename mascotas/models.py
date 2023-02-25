@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.forms import ModelForm
+from django import forms
 
 class Mascota(models.Model):
     duenio = models.ForeignKey(User,on_delete=models.CASCADE)
@@ -19,7 +20,6 @@ class FormularioMascota(ModelForm):
     class Meta:
         model=Mascota
         fields = '__all__'
-
 
 class Vacuna(models.Model):
     vacunas = models.ManyToManyField(Mascota)
