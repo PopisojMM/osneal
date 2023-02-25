@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+
+{% block cuerpo %}
+    <h2>Eliminar {{ object }}</h2>
+    <form method="post">
+    {% csrf_token %}
+        <p>¿Estás seguro de que quieres eliminar {{ object }}?</p>
+        <input type="submit" value="Eliminar">
+    </form>
+{% endblock cuerpo %}
+    

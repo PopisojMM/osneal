@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block cuerpo %}
+    <div class="container-fluid mt-5 text-center mx-auto">
+
+        {% for m  in mascotas %}
+            <p>{{m}} <a href="{% url 'mascotas:editar' m.pk %}">editar</a> | <a href="{% url 'mascotas:borrar' m.pk %}">borrar</a> </p>
+        {% endfor %} 
+
+    </div>
+        
+{% endblock cuerpo %}
+    
