@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import InicarSesion,CerrarSesion,buscar_usuario
+from .views import InicarSesion,CerrarSesion
 
 app_name = 'users'
 
