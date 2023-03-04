@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width,
+    initial-scale=1.0"
+    />
+    <title>OSNEAL</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+  </head>
+  <body>
+    <header class="header">
+      <a href="index-onepage.html" class="logo">
+        <ion-icon name="paw-outline"></ion-icon>OSNEAL
+      </a>
+      <nav class="nav">
+        <a href="index-onepage.html">Volver</a>
+      </nav>
+    </header>
+
+    <section class="home">
+      <div class="content">
+        <h2>Obra Social - OSNeAl</h2>
+        <p>
+          ¡Para conocer más información sobre los beneficios acercate a nuestra sucursal!
+        </p>
+      </div>
+
+      <div class="wrapper-login">
+        <h2>Ingreso de Socios</h2>
+        <form action="{% url 'usuarios:login' %}" method="POST">
+          {% csrf_token %}
+          <div class="input-box">
+            <span class="icon"><ion-icon name="username"></ion-icon></span>
+            <input type="" required />
+            <label>Ingrese su Correo</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"><ion-icon name="password"></ion-icon></span>
+            <input type="password" required />
+            <label>Ingrese su Contraseña</label>
+          </div>
+          <div class="remember-forgot">
+            <label>
+              <input type="checkbox">Recordarme
+            </label>
+            <a href="#">¿Olvidaste tu contraseña?</a>
+          </div>
+            <button type="submit"
+            class="btn">INGRESAR</button>
+        </form>
+
+      
+    </section>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>
