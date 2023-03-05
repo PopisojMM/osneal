@@ -9,7 +9,7 @@ urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     path('usuarios/', include('usuarios.urls')),
-    path('/', TemplateView.as_view(template_name='index.html'),name='index'),
+    path('', TemplateView.as_view(template_name='index.html'),name='index'),
 
 
     # Your stuff: custom urls includes go here
