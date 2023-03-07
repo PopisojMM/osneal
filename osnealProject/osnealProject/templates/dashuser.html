@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> OSNeAl - Panel </title>
-    <link rel="stylesheet" href="assets/css/stylesdash.css">
+    <link rel="stylesheet" href="stylesdash.css">
     <!-- Boxicons CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -93,66 +93,62 @@
     <!-- COMIENZA CONTENIDO DEL MENU -->
      <div class="text">ALTA DE PROPIETARIOS</div>
 
-     <div class="container">
-      <form>
-        <div class="form-group">
-          <label for="nombre">Nombre:</label>
-          <input type="text" id="nombre" name="nombre" required>
-        </div>
-
-        <div class="form-group">
-          <label for="dni">DNI:</label>
-          <input type="text" id="dni" name="dni" required>
-        </div>
-
-        <div class="form-group">
-          <label for="fecha-nacimiento">Fecha de nacimiento:</label>
-          <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
-        </div>
-
-        <div class="form-group">
-          <label for="direccion">Dirección:</label>
-          <input type="text" id="direccion" name="direccion" required>
-        </div>
+     <form>
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre completo">
+      </div>
+      <div class="form-group">
+        <label for="dni">DNI:</label>
+        <input type="text" class="form-control" id="dni" placeholder="Ingrese su número de documento">
+      </div>
+      <div class="form-group">
+        <label for="correo">Correo electrónico:</label>
+        <input type="email" class="form-control" id="correo" placeholder="Ingrese su correo electrónico">
+      </div>
+      <div class="form-group">
+        <label for="fecha-nacimiento">Fecha de nacimiento:</label>
+        <input type="date" class="form-control" id="fecha-nacimiento">
+      </div>
+      <div class="form-group">
+        <label for="direccion">Dirección:</label>
+        <input type="text" class="form-control" id="direccion" placeholder="Ingrese su dirección completa">
+      </div>
 
         <div class="form-group">
           <label for="provincia">Provincia:</label>
-          <input type="text" id="provincia" name="provincia" required>
+          <input type="text" class="form-control" id="provincia" placeholder="Ingrese su provincia">
         </div>
-
         <div class="form-group">
           <label for="localidad">Localidad:</label>
-          <input type="text" id="localidad" name="localidad" required>
+          <input type="text" class="form-control" id="localidad" placeholder="Ingrese su localidad">
         </div>
 
-        <div class="form-group">
-          <label for="celular">Celular:</label>
-          <input type="tel" id="celular" name="celular" required>
-        </div>
-
-        <div class="btn-container">
-          <button type="submit">CARGAR</button>
-          <button type="button">MODIFICAR</button>
-          <button type="button">ELIMINAR</button>
-        </div>
-      </form>
-    </div>
-    
-  <div class="container">
-		<div class="search-container">
-			<form>
-				<input type="text" placeholder="Buscar Propietario...">
-				<button type="submit">Buscar</button>
-			</form>
-		</div>
-	</div>
-
-    
-
-  </div>
+      <div class="form-group">
+        <label for="celular">Celular:</label>
+        <input type="text" class="form-control" id="celular" placeholder="Ingrese su número de celular">
+      </div>
+      <div class="form-group">
+        <label for="opciones">Tipo de Usuario:</label>
+        <select class="form-control" id="opciones">
+          <option value="">Seleccione que tipo de usuario está por Cargar</option>
+          <option value="opcion1">Administrador</option>
+          <option value="opcion2">Veterinario/Peluquero</option>
+          <option value="opcion3">Propietario</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Cargar</button>
+    </form>
+    <form class="form-inline" id="search-form">
+      <div class="form-group mb-2">
+        <label for="search-dni" class="sr-only">DNI</label>
+        <input type="text" class="form-control" id="search-dni" placeholder="Ingrese el DNI del Usuario que desea MODIFICAR o ELIMINAR">
+      </div>
+      <button type="submit" class="btn btn-primary mb-2">Buscar</button>
+    </form>
    </div>
 
-   <script src="assets/js/jsdash.js"></script>
+<script src="jsdash.js"></script>
 </body>
 </html>
 
