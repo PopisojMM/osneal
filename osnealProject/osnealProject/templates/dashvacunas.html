@@ -5,7 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> OSNeAl - Panel </title>
-    <link rel="stylesheet" href="assets/css/stylesdash.css">
+    <link rel="stylesheet" href="stylesdash.css">
+    <link rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous"/>
     <!-- Boxicons CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,9 +30,9 @@
       <li>
         <a href="dashuser.html">
          <i class='bx bx-user'></i>
-         <span class="links_name">Propietarios</span>
+         <span class="links_name">Usuarios</span>
         </a>
-        <span class="tooltip">Propietarios</span>
+        <span class="tooltip">Usuarios</span>
       </li>
 
       <li>
@@ -94,107 +98,56 @@
     <div class="text">Vacunas</div>
     
 
-    <div class="vacunas">
-      <h2>Vacunas aplicadas</h2>
-      <div class="vacuna">
-        <h3>Puppy</h3>
-        <label>
-          <input type="checkbox" name="puppy"> Vacunado
-        </label>
-        <div class="fechas">
-          <label>
-            Fecha de aplicación:
-            <input type="date" name="fecha-puppy-aplicacion">
-          </label>
-          <label>
-            Fecha próxima vacunación:
-            <input type="date" name="fecha-puppy-proxima">
-          </label>
+    <div class="container mt-4">
+      <h1 class="mb-4">Vacunación de animales</h1>
+      <form class="form-inline" method="GET" action="/buscar-mascota">
+        <div class="form-group">
+          <label for="dni-prop">DNI del propietario:</label>
+          <input type="text" class="form-control" id="dni-prop" name="dni-prop" placeholder="Ingrese el DNI del propietario">
         </div>
-      </div>
-      <div class="vacuna">
-        <h3>Quíntuple</h3>
-        <label>
-          <input type="checkbox" name="quintuple"> Vacunado
-        </label>
-        <div class="fechas">
-          <label>
-            Fecha de aplicación:
-            <input type="date" name="fecha-quintuple-aplicacion">
-          </label>
-          <label>
-            Fecha próxima vacunación:
-            <input type="date" name="fecha-quintuple-proxima">
-          </label>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+      </form>
+        <div class="form-group">
+          <label for="vacuna">Vacuna</label>
+          <select class="form-control" id="vacuna">
+            <option value="">Seleccione una vacuna...</option>
+            <option value="Puppy">Puppy</option>
+            <option value="Quintuple">Quintuple</option>
+            <option value="Sextuple">Sextuple</option>
+            <option value="Antitetánica">Antitetánica</option>
+            <option value="Rabia">Rabia</option>
+            <option value="Mixomatosis">Mixomatosis</option>
+          </select>
         </div>
-      </div>
-      <div class="vacuna">
-        <h3>Séxtuple</h3>
-        <label>
-          <input type="checkbox" name="sextuple"> Vacunado
-        </label>
-        <div class="fechas">
-          <label>
-            Fecha de aplicación:
-            <input type="date" name="fecha-sextuple-aplicacion">
-          </label>
-          <label>
-            Fecha próxima vacunación:
-            <input type="date" name="fecha-sextuple-proxima">
-          </label>
+        <div class="form-group">
+          <label for="fecha">Fecha de la última aplicación</label>
+          <input
+            type="date"
+            class="form-control"
+            id="fecha"
+            placeholder="Ingrese la fecha de la última aplicación"
+          />
         </div>
-      </div>
-      <div class="vacuna">
-        <h3>Antitetánica</h3>
-        <label>
-          <input type="checkbox" name="antitetanica"> Vacunado
-        </label>
-        <div class="fechas">
-          <label>
-            Fecha de aplicación:
-            <input type="date" name="fecha-antitetanica-aplicacion">
-          </label>
-          <label>
-            Fecha próxima vacunación:
-            <input type="date" name="fecha-antitetanica-proxima">
-          </label>
+        <div class="form-group">
+          <label for="proxima">Próxima fecha de aplicación</label>
+          <input
+            type="date"
+            class="form-control"
+            id="proxima"
+            placeholder="Ingrese la próxima fecha de aplicación"
+          />
         </div>
-      </div>
-      <div class="vacuna">
-        <h3>Rabia</h3>
-        <label>
-          <input type="checkbox" name="rabia"> Vacunado
-        </label>
-        <div class="fechas">
-          <label>
-            Fecha de aplicación:
-            <input type="date" name="fecha-rabia-aplicacion">
-          </label>
-          <label>
-            Fecha próxima vacunación:
-            <input type="date" name="fecha-rabia-proxima">
-          </label>
-        </div>
-      </div>
-      <div class="vacuna">
-        <h3>Mixomatosis</h3>
-        <label>
-          <input type="checkbox" name="mixomatosis"> Vacunado
-        </label>
-        <div class="fechas">
-          <label>
-            Fecha de aplicación:
-            <input type="date" name="fecha-mixomatosis-aplicacion">
-          </label>
-          <label>
-            Fecha próxima vacunación:
-            <input type="date" name="fecha-mixomatosis-proxima">
-          </label>
-        </div>
-      </div>
+        <button type="submit" class="btn btn-primary">Calcular</button>
+      </form>
+    </div>
 
-
-      <script src="assets/js/jsdash.js"></script>
+    <!-- Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+<script src="jsdash.js"></script>
 </body>
 </html>
 

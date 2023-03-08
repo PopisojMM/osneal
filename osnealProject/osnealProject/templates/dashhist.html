@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> OSNeAl - Panel </title>
-    <link rel="stylesheet" href="assets/css/stylesdash.css">
+    <link rel="stylesheet" href="stylesdash.css">
     <!-- Boxicons CDN Link -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,9 +26,9 @@
       <li>
         <a href="dashuser.html">
          <i class='bx bx-user'></i>
-         <span class="links_name">Propietarios</span>
+         <span class="links_name">Usuarios</span>
         </a>
-        <span class="tooltip">Propietarios</span>
+        <span class="tooltip">Usuarios</span>
       </li>
 
       <li>
@@ -94,19 +94,35 @@
      <div class="text">HISTORIALES CLINICOS</div>
 
      <div class="container">
-      <div class="search-container">
-        <form>
-          <input type="text" placeholder="Buscar por nombre...">
-          <button type="submit">Buscar</button>
-        </form>
-      </div>
-      <div class="text-container">
-        <textarea placeholder="Ingrese aqui las novedades del Historial Clinico"></textarea>
-      </div>
+      <h2>Buscar Animal por DNI del Propietario</h2>
+      <form>
+        <div class="form-group">
+          <label for="dni">DNI del Propietario:</label>
+          <input type="text" class="form-control" id="dni" placeholder="Ingrese el DNI del Propietario">
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+      </form>
     </div>
-   </div>
+    <div class="container">
+      <h2>Historial Clínico de [Nombre del Animal]</h2>
+      <form>
+        <div class="form-group">
+          <label for="fecha">Fecha de Consulta:</label>
+          <input type="date" class="form-control" id="fecha">
+        </div>
+        <div class="form-group">
+          <label for="diagnostico">Diagnóstico:</label>
+          <input type="text" class="form-control" id="diagnostico">
+        </div>
+        <div class="form-group">
+          <label for="tratamiento">Tratamiento Recetado:</label>
+          <textarea class="form-control" id="tratamiento"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </form>
+    </div>
 
-<script src="assets/js/jsdash.js"></script>
+<script src="jsdash.js"></script>
 </body>
 </html>
 
