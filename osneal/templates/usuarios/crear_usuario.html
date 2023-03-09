@@ -1,0 +1,20 @@
+{% extends 'dash-base.html' %}
+    <!-- COMIENZA CONTENIDO DEL MENU -->
+    
+    {% block contenido %}
+      
+    <div class="text">ALTA DE USUARIOS</div>
+    <form action="{% url 'usuarios:crear_usuario' %}" method= "POST">
+      {% csrf_token %}
+      {{ user_form.errors }}
+      {{ perfil_form.errors }}
+      {{ user_form.as_p }}
+      {{ perfil_form.as_p }}
+
+      <button type="submit" class="btn btn-primary">Guardar</button>
+
+    </form>
+
+    {% endblock contenido %}
+      
+    

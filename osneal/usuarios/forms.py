@@ -13,8 +13,8 @@ class UserForm(forms.ModelForm):
         }
 
 
-class PerfilUsuario(forms.ModelForm):
+class PerfilUsuarioForm(forms.ModelForm):
     '''Formulario para crear un perfil de usuario'''
     class Meta:
         model = PerfilUsuario
-        exclude = ('usuario',)
+        exclude = ('usuario',"fecha_baja","observaciones")

@@ -7,7 +7,9 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
+    path(settings.ADMIN_URL, admin.site.urls),
     path('usuarios/', include('usuarios.urls')),
+    path('mascotas/', include('mascotas.urls')),
     path('', TemplateView.as_view(template_name='index.html'),name='index'),
 
 

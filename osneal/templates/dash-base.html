@@ -34,7 +34,7 @@
      <ul class="nav_list">
 
       <li>
-        <a href="{% url 'usuarios:crear_usuarios' %}">
+        <a href="{% url 'usuarios:crear_usuario' %}">
          <i class='bx bx-user'></i>
          <span class="links_name">Propietarios</span>
         </a>
@@ -90,7 +90,7 @@
            <div class="name_job">
             {% if user.is_authenticated %}
                 <div class="name">{{user.username}}</div>
-                {% if user.veterinario and user.is_staff %}
+                {% if user.tipo_usuario == propietario or user.is_staff %}
                     <div class="job">Administrador</div>
                 {% elif user.veterinario %}
                     <div class="job">Veterinario</div>
