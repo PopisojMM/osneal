@@ -294,7 +294,8 @@ label {
 
 input[type="text"],
 input[type="date"],
-input[type="tel"] {
+input[type="tel"],
+select {
 	padding: 5px;
 	border: 1px solid #ccc;
 	border-radius: 5px;

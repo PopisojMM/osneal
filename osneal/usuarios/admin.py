@@ -1,7 +1,6 @@
 from django.contrib import admin
-from .models import Propietario, Veterinario
+from .models import PerfilUsuario
 # Register your models here.
 
-admin.site.register(Propietario)
-admin.site.register(Veterinario)
+admin.site.register(PerfilUsuario)
 
