@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> OSNeAl - Panel </title>
     <link rel="stylesheet" href="stylesdash.css">
-    <link rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
     crossorigin="anonymous"/>
     <!-- Boxicons CDN Link -->
@@ -51,13 +50,14 @@
         <span class="tooltip">Turnos</span>
       </li>
 
+      <!-- HISTORIAL DESACTIVADO 
       <li>
         <a href="dashlogs.html">
          <i class='bx bx-pie-chart-alt-2'></i>
          <span class="links_name">Logs</span>
         </a>
         <span class="tooltip">Logs</span>
-      </li>
+      </li> -->
 
       <li>
         <a href="dashhist.html">
@@ -102,8 +102,8 @@
       <h1 class="mb-4">Vacunación de animales</h1>
       <form class="form-inline" method="GET" action="/buscar-mascota">
         <div class="form-group">
-          <label for="dni-prop">DNI del propietario:</label>
-          <input type="text" class="form-control" id="dni-prop" name="dni-prop" placeholder="Ingrese el DNI del propietario">
+          <label for="microchip">Microchip:</label>
+          <input type="text" class="form-control" id="microchip" name="microchip" placeholder="Ingrese el N° del Microchip">
         </div>
         <button type="submit" class="btn btn-primary">Buscar</button>
       </form>
