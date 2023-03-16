@@ -1,0 +1,53 @@
+{% extends 'dash-base.html' %}
+    <!-- COMIENZA CONTENIDO DEL MENU -->
+    
+    {% block contenido %}
+
+    <div class="container">
+      <h1>Mascotas</h1>
+      <div class="row">
+        <!-- Creamos una tarjeta para cada mascota -->
+        <div class="col-md-4">
+          <div class="card">
+            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Imagen de la mascota">
+            <div class="card-body">
+              <h5 class="card-title">Mascota 1</h5>
+              <p class="card-text">Descripción de la mascota</p>
+              <!-- Agregamos los botones para acceder al historial clínico y las vacunas -->
+              <a href="histclinmas.html" class="btn btn-primary">Historial Clínico</a>
+              <a href="vacunasmascotas.html" class="btn btn-secondary">Vacunas</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Imagen de la mascota">
+            <div class="card-body">
+              <h5 class="card-title">Mascota 2</h5>
+              <p class="card-text">Descripción de la mascota</p>
+              <a href="histclinmas.html" class="btn btn-primary">Historial Clínico</a>
+              <a href="vacunasmascotas.html" class="btn btn-secondary">Vacunas</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card">
+            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Imagen de la mascota">
+            <div class="card-body">
+              <h5 class="card-title">Mascota 3</h5>
+              <p class="card-text">Descripción de la mascota</p>
+              <a href="histclinmas.html" class="btn btn-primary">Historial Clínico</a>
+              <a href="vacunasmascotas.html" class="btn btn-secondary">Vacunas</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  {% endblock contenido %}
+
+  {% block js %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  {% endblock js %}

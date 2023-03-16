@@ -1,0 +1,38 @@
+{% extends 'dash-base.html' %}
+    <!-- COMIENZA CONTENIDO DEL MENU -->
+    
+    {% block contenido %}
+
+    <div class="text">HISTORIALES CLINICOS</div>
+
+    <div class="container">
+     <h2>Buscar Animal por Microchip</h2>
+     <div class="input-group mb-3">
+       <input type="text" class="form-control" placeholder="Ingrese el Microchip de la mascota">
+       <div class="input-group-append">
+         <button class="btn btn-primary" type="button">Buscar</button>
+       </div>
+     </div>
+   </div>
+   <div class="container">
+     <h2>Historial Clínico de [Nombre del Animal]</h2>
+     <form>
+       <div class="form-group">
+         <label for="fecha">Fecha de Consulta:</label>
+         <input type="date" class="form-control" id="fecha">
+       </div>
+       <div class="form-group">
+         <label for="diagnostico">Diagnóstico:</label>
+         <input type="text" class="form-control" id="diagnostico">
+       </div>
+       <div class="form-group">
+         <label for="tratamiento">Tratamiento Recetado:</label>
+         <textarea class="form-control" id="tratamiento"></textarea>
+       </div>
+       <button type="submit" class="btn btn-primary">Guardar</button>
+     </form>
+   </div>
+    
+  {% endblock contenido %}
+
+

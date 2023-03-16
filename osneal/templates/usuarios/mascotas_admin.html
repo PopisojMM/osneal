@@ -1,0 +1,115 @@
+{% extends 'dash-base.html' %}
+    <!-- COMIENZA CONTENIDO DEL MENU -->
+    
+    {% block contenido %}
+
+    <div class="text">ALTA DE MASCOTAS</div>
+
+    <form>
+      <div class="form-group">
+        <label for="dni">DNI del Usuario Propietario:</label>
+        <input type="text" class="form-control" id="dni" name="dni" placeholder="Ingrese el DNI del usuario">
+      </div>
+      <div class="form-group">
+        <label for="nombre">Nombre de la mascota:</label>
+        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese el nombre de la mascota">
+      </div>
+      <div class="form-group">
+        <label for="microchip">Microchip:</label>
+        <input type="text" class="form-control" id="microchip" name="microchip" placeholder="Ingrese el número de microchip">
+      </div>
+      <div class="form-group">
+        <label for="especie">Especie:</label>
+        <input type="text" class="form-control" id="especie" name="especie" placeholder="Ingrese la especie de la mascota">
+      </div>
+      <div class="form-group">
+        <label for="raza">Raza:</label>
+        <input type="text" class="form-control" id="raza" name="raza" placeholder="Ingrese la raza de la mascota">
+      </div>
+      <div class="form-group">
+        <label for="pelaje">Pelaje:</label>
+        <input type="text" class="form-control" id="pelaje" name="pelaje" placeholder="Ingrese el pelaje de la mascota">
+      </div>
+      <div class="form-group">
+        <label for="fecha-nacimiento">Fecha de nacimiento:</label>
+        <input type="date" class="form-control" id="fecha-nacimiento">
+      </div>
+      <div class="form-group">
+        <label for="plan">Tipo de Plan:</label>
+        <input type="text" class="form-control" id="plan" name="plan" placeholder="Ingrese el tipo de Plan">
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary">Agregar mascota</button>
+      </div>
+
+    </form>
+
+    <p>
+       
+
+    </p>
+<div class="input-group mb-3">
+  <input type="text" class="form-control" placeholder="Ingrese el Microchip de la mascota">
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button">Buscar</button>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Microchip</th>
+      <th>Especie</th>
+      <th>Raza</th>
+      <th>Pelaje</th>
+      <th>Edad</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Fido</td>
+      <td>123456789</td>
+      <td>Perro</td>
+      <td>Poodle</td>
+      <td>Blanco</td>
+      <td>5 años</td>
+      <td>
+        <a href="#" class="btn btn-outline-primary btn-sm">Editar</a>
+        <a href="#" class="btn btn-outline-danger btn-sm">Eliminar</a>
+      </td>
+    </tr>
+    <tr>
+      <td>Mimi</td>
+      <td>987654321</td>
+      <td>Gato</td>
+      <td>Siamés</td>
+      <td>Negro</td>
+      <td>3 años</td>
+      <td>
+        <a href="#" class="btn btn-outline-primary btn-sm">Editar</a>
+        <a href="#" class="btn btn-outline-danger btn-sm">Eliminar</a>
+      </td>
+    </tr>
+    <tr>
+      <td>Lucky</td>
+      <td>246813579</td>
+      <td>Perro</td>
+      <td>Golden Retriever</td>
+      <td>Dorado</td>
+      <td>7 años</td>
+      <td>
+        <a href="#" class="btn btn-outline-primary btn-sm">Editar</a>
+        <a href="#" class="btn btn-outline-danger btn-sm">Eliminar</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+    
+  {% endblock contenido %}
+
+
+    {% block js %}
+    <script src="jsdash.js"></script>
+    {% endblock js %}

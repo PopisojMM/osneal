@@ -1,0 +1,48 @@
+{% extends 'dash-base.html' %}
+    <!-- COMIENZA CONTENIDO DEL MENU -->
+    
+    {% block contenido %}
+
+    <div class="text">Historial de Vacunas</div>
+
+    <div class="container">
+      <h1>Vacunación de mascotas</h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Vacuna</th>
+            <th>Fecha última vacunación</th>
+            <th>Próxima vacunación</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-vacunas">
+        </tbody>
+      </table>
+    </div>
+    
+  {% endblock contenido %}
+
+  {% block js %}
+  <script>
+    const tablaVacunas = document.getElementById("tabla-vacunas");
+    const vacunasMascota = [
+      { nombre: "Vacuna 1", fecha: "2022-01-01", intervalo: 6 },
+      { nombre: "Vacuna 2", fecha: "2022-02-01", intervalo: 12 },
+      { nombre: "Vacuna 3", fecha: "2022-03-01", intervalo: 3 },
+    ];
+
+    vacunasMascota.forEach((vacuna) => {
+      const fechaVacunacion = moment(vacuna.fecha);
+      const proximaVacunacion = fechaVacunacion.clone().add(vacuna.intervalo, "months");
+      const diasFaltantes = proximaVacunacion.diff(moment(), "days");
+      const fila = `
+        <tr>
+          <td>${vacuna.nombre}</td>
+          <td>${fechaVacunacion.format("DD/MM/YYYY")}</td>
+          <td>${proximaVacunacion.format("DD/MM/YYYY")}</td>
+        </tr>
+      `;
+      tablaVacunas.insertAdjacentHTML("beforeend", fila);
+    });
+  </script>
+  {% endblock js %}

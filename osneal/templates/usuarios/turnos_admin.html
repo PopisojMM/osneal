@@ -1,0 +1,108 @@
+
+<!DOCTYPE html> 
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> OSNeAl - Panel </title>
+    <link rel="stylesheet" href="stylesdash.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous"/>
+    <!-- Boxicons CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+
+  <!-- COMIENZA PANEL -->
+   <div class="sidebar">
+     <div class="logo_content">
+       <div class="logo">
+         <div class="logo_name">Panel de Administración</div>
+       </div>
+       <i class='bx bx-menu' id="btn"></i>
+     </div>
+
+     <ul class="nav_list">
+
+      <li>
+        <a href="dashuser.html">
+         <i class='bx bx-user'></i>
+         <span class="links_name">Usuarios</span>
+        </a>
+        <span class="tooltip">Usuarios</span>
+      </li>
+
+      <li>
+        <a href="dashmascotas.html">
+         <i class='bx bx-user'></i>
+         <span class="links_name">Mascotas</span>
+        </a>
+        <span class="tooltip">Mascotas</span>
+      </li>
+
+       <li>
+        <a href="dashturnos.html">
+         <i class='bx bx-chat'></i>
+         <span class="links_name">Turnos</span>
+        </a>
+        <span class="tooltip">Turnos</span>
+      </li>
+
+      <!-- HISTORIAL DESACTIVADO 
+      <li>
+        <a href="dashlogs.html">
+         <i class='bx bx-pie-chart-alt-2'></i>
+         <span class="links_name">Logs</span>
+        </a>
+        <span class="tooltip">Logs</span>
+      </li> -->
+
+      <li>
+        <a href="dashhist.html">
+         <i class='bx bx-folder'></i>
+         <span class="links_name">Historial Clinico</span>
+        </a>
+        <span class="tooltip">Historial</span>
+      </li>
+
+      <li>
+        <a href="dashvacunas.html">
+         <i class='bx bx-heart'></i>
+         <span class="links_name">Vacunas</span>
+        </a>
+        <span class="tooltip">Vacunas</span>
+      </li>
+  <!-- TERMINA LISTA DE OPCIONES DEL PANEL -->
+  <!-- Footer del panel -->
+     </ul>
+     <div class="content">
+       <div class="user">
+         <div class="user_details">
+           <img src="images/profile.jpg" alt="">
+           <div class="name_job">
+             <div class="name">Nombre Usuario</div>
+             <div class="job">Tipo   Usuario</div>
+           </div>
+         </div>
+         <i class='bx bx-log-out' id="log_out"></i>
+       </div>
+     </div>
+   </div>
+   <div class="home_content">
+  <!-- Termina el Footer del panel -->
+
+
+    <!-- COMIENZA CONTENIDO DEL MENU -->
+    <div class="text">Dashboard</div>
+
+    <div class="formulario">
+     <p>DASHBOARD DE TURNOS</p>
+   </div>
+  </div>
+
+<script src="jsdash.js"></script>
+</body>
+</html>
+

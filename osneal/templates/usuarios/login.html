@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width,
+    initial-scale=1.0"
+    />
+    <title>OSNEAL</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+  </head>
+  <body>
+    <header class="header">
+      <a href="{% url 'index' %}" class="logo">
+        <ion-icon name="paw-outline"></ion-icon>OSNEAL
+      </a>
+      <nav class="nav">
+        <a href="{% url 'index' %}">Volver</a>
+      </nav>
+    </header>
+
+    <section class="home">
+      <div class="content">
+        <h2>Obra Social - OSNeAl</h2>
+        <p>
+          ¡Para conocer más información sobre los beneficios acercate a nuestra sucursal!
+        </p>
+      </div>
+
+      <div class="wrapper-login">
+        <h2>Ingreso de Socios</h2>
+        <form action="{% url 'usuarios:login' %}" method="POST">
+          {% csrf_token %}
+          {{ form.non_field_errors }}
+          <div class="input-box">
+            <span class="icon"><ion-icon ></ion-icon></span>
+            <input name="username" type="text" aria-describedby="validationServer03Feedback"/>
+            <label>Ingrese su Correo</label>
+            {{form.username.errors}}
+
+          </div>
+          <div class="input-box">
+            <span class="icon"><ion-icon></ion-icon></span>
+            <input name="password" type="password" />
+            <label>Ingrese su Contraseña</label>
+            {{form.password.errors}}
+          </div>
+          <div class="remember-forgot">
+            <label>
+              <input type="checkbox">Recordarme
+            </label>
+            <a href="#">¿Olvidaste tu contraseña?</a>
+          </div>
+            <button type="submit"
+            class="btn">INGRESAR</button>
+        </form>
+
+      
+    </section>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+{% extends 'dash-base.html' %}
+    <!-- COMIENZA CONTENIDO DEL MENU -->
+    
+    {% block contenido %}
+
+    <div class="text">Vacunas</div>
+    
+
+    <div class="container mt-4">
+      <h1 class="mb-4">Vacunación de animales</h1>
+      <form class="form-inline" method="GET" action="/buscar-mascota">
+        <div class="form-group">
+          <label for="microchip">Microchip:</label>
+          <input type="text" class="form-control" id="microchip" name="microchip" placeholder="Ingrese el N° del Microchip">
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+      </form>
+        <div class="form-group">
+          <label for="vacuna">Vacuna</label>
+          <select class="form-control" id="vacuna">
+            <option value="">Seleccione una vacuna...</option>
+            <option value="Puppy">Puppy</option>
+            <option value="Quintuple">Quintuple</option>
+            <option value="Sextuple">Sextuple</option>
+            <option value="Antitetánica">Antitetánica</option>
+            <option value="Rabia">Rabia</option>
+            <option value="Mixomatosis">Mixomatosis</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="fecha">Fecha de la última aplicación</label>
+          <input
+            type="date"
+            class="form-control"
+            id="fecha"
+            placeholder="Ingrese la fecha de la última aplicación"
+          />
+        </div>
+        <div class="form-group">
+          <label for="proxima">Próxima fecha de aplicación</label>
+          <input
+            type="date"
+            class="form-control"
+            id="proxima"
+            placeholder="Ingrese la próxima fecha de aplicación"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Calcular</button>
+      </form>
+    </div>
+    
+  {% endblock contenido %}
+
+  {% block js %}
+  <script>
+  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"
+  </script>
+{% endblock js %}
