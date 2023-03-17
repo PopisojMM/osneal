@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PerfilUsuario,Usuario
+from .models import Usuario
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django import forms
 # Register your models here.
@@ -62,5 +62,4 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = ()
 
 admin.site.register(Usuario,UserAdmin)
-admin.site.register(PerfilUsuario)
 

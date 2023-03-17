@@ -41,6 +41,12 @@ class Usuario(AbstractBaseUser,PermissionsMixin):
     """
     Modelo de usuario para la aplicación.
     """
+    TIPO_USUARIO = (
+        ('propietario', 'Propietario'),
+        ('veterinario', 'Veterinario'),
+        ('administrador', 'Administrador'),
+    )
+
     nombre= models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
@@ -51,27 +57,12 @@ class Usuario(AbstractBaseUser,PermissionsMixin):
 
     objects = UsuarioManager()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['password']
-
-
-class PerfilUsuario(models.Model):
-    '''Modelo para los propietarios de los animales:
-    se hereda de la clase User de Django'''
-    
-    TIPO_USUARIO = (
-        ('propietario', 'Propietario'),
-        ('veterinario', 'Veterinario'),
-        ('administrador', 'Administrador'),
-    )
-    
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
-    dni = models.BigIntegerField()
+    dni = models.CharField(max_length=20,null=True, blank=True,default=None)
     telefono = models.BigIntegerField(null=True)
-    direccion = models.CharField(max_length=250)
-    localidad = models.CharField(max_length=150)
-    provincia = models.CharField(max_length=150)
-    codigo_postal = models.CharField(max_length=100)
+    direccion = models.CharField(max_length=250,null=True, blank=True)
+    localidad = models.CharField(max_length=150,null=True, blank=True)
+    provincia = models.CharField(max_length=150,null=True, blank=True)
+    codigo_postal = models.CharField(max_length=100,null=True, blank=True)
     fecha_nacimiento = models.DateField(null=True, blank=True)
     fecha_alta = models.DateField(auto_now_add=True)
     fecha_baja = models.DateField(null=True, blank=True)
@@ -79,5 +70,6 @@ class PerfilUsuario(models.Model):
     tipo_usuario = models.CharField(choices=TIPO_USUARIO, max_length=100)
     observaciones = models.TextField(max_length=500,null=True, blank=True)
 
-    def __str__(self):
-        return self.usuario.email
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['password']
+

@@ -1,19 +1,21 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth.views import LoginView,LogoutView
+from django.shortcuts import render, redirect
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse
 from django.urls import reverse_lazy
-from .forms import UserForm,PerfilUsuarioForm
+from .forms import UserForm
 from django.views.generic import CreateView, ListView
 from django.contrib.auth import get_user_model
 
 Usuario = get_user_model()
 
 # Create your views here.
+
+
 class UserLoginView(LoginView):
     '''Clase para el login de usuarios'''
 
     template_name = 'usuarios/login.html'
-    redirect_authenticated_user = True 
+    redirect_authenticated_user = True
     next_page = reverse_lazy('usuarios:crear_usuario')
 
     def get(self, request, *args, **kwargs):
@@ -30,6 +32,7 @@ class UserLoginView(LoginView):
             return reverse('usuarios:crear_usuario')
         else:
             return reverse('mascotas:index')
+
 
 class UserLogoutView(LogoutView):
     '''Clase para el logout de usuarios'''
@@ -48,24 +51,34 @@ class CrearUsuarioView(CreateView):
     def get(self, request, *args, **kwargs):
         '''Muestra el formulario para crear usuarios'''
         user_form = UserForm()
-        perfil_form = PerfilUsuarioForm()
-        return render(request, self.template_name, {'user_form': user_form, 'perfil_form': perfil_form})
+        return render(request, self.template_name, {'user_form': user_form})
 
     def post(self, request, *args, **kwargs):
         '''Procesa el formulario para crear usuarios'''
         user_form = UserForm(request.POST)
-        perfil_form = PerfilUsuarioForm(request.POST, request.FILES)
-        print(perfil_form.fields['fecha_nacimiento'])
-        if user_form.is_valid() and perfil_form.is_valid():
+        if user_form.is_valid():
             user = user_form.save(commit=False)
-            perfil = perfil_form.save(commit=False)
-            perfil.usuario = user
-            user.set_password(str(perfil_form.cleaned_data['dni']))
+            user.set_password(str(user_form.cleaned_data['dni']))
+            if user_form.cleaned_data['tipo_usuario'] == 'administrador':
+                user.is_staff = True
+                user.is_admin = True
+                user.is_superuser = True
+            user.is_active = True
             user.save()
-            perfil.save()
-            return redirect('usuarios:login')
+            return render(request,
+                          self.template_name,
+                          {
+                              'user_form': user_form,
+                              'mensaje' : 'Usuario creado correctamente'
+                            }
+                          )
         else:
-            return render(request, self.template_name, {'user_form': user_form, 'perfil_form': perfil_form})
+            return render(request,
+                          self.template_name,
+                          {
+                              'user_form': user_form,
+                            }
+                          )
 
 
 class BuscarUsuarioView(ListView):
@@ -77,5 +90,5 @@ class BuscarUsuarioView(ListView):
     def get_queryset(self):
         '''Devuelve los usuarios que coincidan con el criterio de búsqueda'''
         queryset = super().get_queryset()
-        queryset = queryset.filter(perfilusuario__dni=self.request.GET.get("dni_usuario"))
+        queryset = queryset.filter(dni=self.request.GET.get("dni_usuario"))
         return queryset

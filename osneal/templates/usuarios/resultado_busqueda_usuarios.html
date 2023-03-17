@@ -3,7 +3,6 @@
     
     {% block contenido %}
 
-    {{usuarios}}
     <nav class="navbar navbar-dark bg-dark">
       <a class="navbar-brand" href="dashuser.html">Volver</a>
     </nav>
@@ -26,31 +25,20 @@
             </tr>
           </thead>
           <tbody>
+            {% for usuario in usuarios %}
             <tr>
-              <td>John Doe</td>
-              <td>12345678</td>
-              <td>johndoe@example.com</td>
-              <td>01/01/1970</td>
-              <td>123 Main St</td>
-              <td>Provincia 1</td>
-              <td>Localidad 1</td>
-              <td>1234567890</td>
-              <td><a href="formulario.html" class="btn btn-primary">Editar</a></td>
+              <td>{{usuario.nombre}} {{usuario.apellido}}</td>
+              <td>{{usuario.dni}}</td>
+              <td>{{usuario.email}}</td>
+              <td>{{usuario.fecha_nacimiento}}</td>
+              <td>{{usuario.direccion}}</td>
+              <td>{{usuario.provincia}}</td>
+              <td>{{usuario.localidad}}</td>
+              <td>{{usuario.telefono}}</td>
+              <td><a href="#" class="btn btn-primary">Editar</a></td>
               <td><button class="btn btn-danger" onclick="eliminarUsuario(this)">Eliminar</button></td>
-            </tr>
-            <tr>
-              <td>Jane Doe</td>
-              <td>87654321</td>
-              <td>janedoe@example.com</td>
-              <td>02/02/1980</td>
-              <td>456 Oak St</td>
-              <td>Provincia 2</td>
-              <td>Localidad 2</td>
-              <td>0987654321</td>
-              <td><a href="formulario.html" class="btn btn-primary">Editar</a></td>
-              <td><button class="btn btn-danger" onclick="eliminarUsuario(this)">Eliminar</button></td>
-            </tr>
-          </tbody>
+            {% endfor %}
+            </tbody>
         </table>
       </div>
     
