@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse
 from django.urls import reverse_lazy
 from .forms import UserForm
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.contrib.auth import get_user_model
 
 Usuario = get_user_model()
@@ -90,5 +90,25 @@ class BuscarUsuarioView(ListView):
     def get_queryset(self):
         '''Devuelve los usuarios que coincidan con el criterio de búsqueda'''
         queryset = super().get_queryset()
-        queryset = queryset.filter(dni=self.request.GET.get("dni_usuario"))
+        queryset = queryset.filter(dni__contains=self.request.GET.get("dni_usuario"))
         return queryset
+
+
+class EditarUsuarioView(UpdateView):
+    '''Clase para editar usuarios.
+    '''
+    form_class = UserForm
+    template_name = 'usuarios/editar_usuario_admin.html'
+    success_url = reverse_lazy('usuarios:crear_usuario')
+    queryset = Usuario.objects.all()
+
+
+class BorrarUsuarioView(DeleteView):
+    queryset = Usuario.objects.all()
+    success_url = reverse_lazy('usuarios:crear_usuario')
+    template_name = 'usuarios/carga_usuarios_admin.html'
+    pk_url_kwarg = 'pk'	
+
+    def get(self, request, *args, **kwargs):
+        self.delete(self, request, *args, **kwargs)
+        return render(request,self.template_name,{"mensaje":"Usuario eliminado correctamente"})
