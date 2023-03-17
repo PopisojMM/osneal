@@ -3,10 +3,10 @@ from django.contrib.auth.views import LoginView,LogoutView
 from django.urls import reverse
 from django.urls import reverse_lazy
 from .forms import UserForm,PerfilUsuarioForm
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
+from django.contrib.auth import get_user_model
 
-
-
+Usuario = get_user_model()
 
 # Create your views here.
 class UserLoginView(LoginView):
@@ -42,7 +42,8 @@ class CrearUsuarioView(CreateView):
     '''Clase para crear usuarios.
     '''
 
-    template_name = 'usuarios/crear_usuario.html'
+    template_name = 'usuarios/carga_usuarios_admin.html'
+    queryset = None
 
     def get(self, request, *args, **kwargs):
         '''Muestra el formulario para crear usuarios'''
@@ -54,13 +55,27 @@ class CrearUsuarioView(CreateView):
         '''Procesa el formulario para crear usuarios'''
         user_form = UserForm(request.POST)
         perfil_form = PerfilUsuarioForm(request.POST, request.FILES)
+        print(perfil_form.fields['fecha_nacimiento'])
         if user_form.is_valid() and perfil_form.is_valid():
             user = user_form.save(commit=False)
-            user.set_password(user.password)
             perfil = perfil_form.save(commit=False)
             perfil.usuario = user
+            user.set_password(str(perfil_form.cleaned_data['dni']))
             user.save()
             perfil.save()
             return redirect('usuarios:login')
         else:
             return render(request, self.template_name, {'user_form': user_form, 'perfil_form': perfil_form})
+
+
+class BuscarUsuarioView(ListView):
+    '''Lista los usuarios que coincidan con el criterio de búsqueda'''
+    template_name = 'usuarios/resultado_busqueda_usuarios.html'
+    model = Usuario
+    context_object_name = 'usuarios'
+
+    def get_queryset(self):
+        '''Devuelve los usuarios que coincidan con el criterio de búsqueda'''
+        queryset = super().get_queryset()
+        queryset = queryset.filter(perfilusuario__dni=self.request.GET.get("dni_usuario"))
+        return queryset

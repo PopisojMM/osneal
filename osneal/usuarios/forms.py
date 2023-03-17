@@ -1,16 +1,15 @@
 from .models import PerfilUsuario
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 class UserForm(forms.ModelForm):
     '''Formulario para crear un usuario'''
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password')
-        widgets = {
-            'password': forms.PasswordInput(),
-        }
+        fields = ( 'email','nombre', 'apellido',)
+        
 
 
 class PerfilUsuarioForm(forms.ModelForm):
