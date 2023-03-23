@@ -18,11 +18,15 @@
   <!-- Boxicons CDN Link -->
   <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.3.3/dist/jBox.all.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.3.3/dist/jBox.all.min.css" rel="stylesheet">
+
+  {% block encabezado %}
+  
+  {% endblock encabezado %}
 </head>
 
-{% block encabezado %}
-
-{% endblock encabezado %}
 
 <body>
 
@@ -46,7 +50,7 @@
       </li>
 
       <li>
-        <a href="dashmascotas.html">
+        <a href="{% url 'mascotas:carga' %}">
           <i class='bx bx-user'></i>
           <span class="links_name">Mascotas</span>
         </a>
@@ -71,7 +75,7 @@
 -->
 
       <li>
-        <a href="dashhist.html">
+        <a href="{% url 'mascotas:historial' %}">
           <i class='bx bx-folder'></i>
           <span class="links_name">Historial Clinico</span>
         </a>
@@ -79,7 +83,7 @@
       </li>
 
       <li>
-        <a href="dashvacunas.html">
+        <a href="{% url 'mascotas:vacuna' %}">
           <i class='bx bx-heart'></i>
           <span class="links_name">Vacunas</span>
         </a>
@@ -140,9 +144,6 @@
   </div>
 
   
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.3.3/dist/jBox.all.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.3.3/dist/jBox.all.min.css" rel="stylesheet">
 
   <script src="{% static 'js/dash-base.js' %}"></script>
 

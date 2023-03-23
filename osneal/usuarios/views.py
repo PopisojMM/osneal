@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse
 from django.urls import reverse_lazy
 from .forms import UserForm
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.contrib.auth import get_user_model
+from django.http import JsonResponse
 
 Usuario = get_user_model()
 
@@ -80,20 +81,6 @@ class CrearUsuarioView(CreateView):
                             }
                           )
 
-
-class BuscarUsuarioView(ListView):
-    '''Lista los usuarios que coincidan con el criterio de búsqueda'''
-    template_name = 'usuarios/resultado_busqueda_usuarios.html'
-    model = Usuario
-    context_object_name = 'usuarios'
-
-    def get_queryset(self):
-        '''Devuelve los usuarios que coincidan con el criterio de búsqueda'''
-        queryset = super().get_queryset()
-        queryset = queryset.filter(dni__contains=self.request.GET.get("dni_usuario"))
-        return queryset
-
-
 class EditarUsuarioView(UpdateView):
     '''Clase para editar usuarios.
     '''
@@ -112,3 +99,28 @@ class BorrarUsuarioView(DeleteView):
     def get(self, request, *args, **kwargs):
         self.delete(self, request, *args, **kwargs)
         return render(request,self.template_name,{"mensaje":"Usuario eliminado correctamente"})
+    
+
+def json_buscar_usuario(request,dni):
+    '''Retorna usuarios que coincidan con el criterio de búsqueda'''
+    data = {}
+    if request.method == 'GET' and dni: 
+        #limitar luego a que solo usuarios admin puedan acceder aca
+    
+        data = Usuario.objects.filter(
+            dni__contains=dni).values('id','dni','nombre','apellido')
+
+
+    return JsonResponse(list(data),safe=False)
+
+class BuscarUsuarioView(ListView):
+    '''Lista los usuarios que coincidan con el criterio de búsqueda'''
+    template_name = 'usuarios/resultado_busqueda_usuarios.html'
+    model = Usuario
+    context_object_name = 'usuarios'
+
+    def get_queryset(self):
+        '''Devuelve los usuarios que coincidan con el criterio de búsqueda'''
+        queryset = super().get_queryset()
+        queryset = queryset.filter(dni__contains=self.request.GET.get("dni_usuario"))
+        return queryset
