@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DeleteView
 from mascotas.forms import MascotaForm
 from mascotas.models import Mascota
 from usuarios.models import Usuario
@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 
 # Create your views here.
+
 
 class CrearMAscota(CreateView):
     '''Clase para crear mascotas'''
@@ -23,15 +24,25 @@ class CrearMAscota(CreateView):
             try:
                 mascota.duenio = Usuario.objects.get(dni=request.POST.get("dni"))
             except:
-                return render(request,self.template_name,{"form":form,"error":"El DNI ingresado no existe"})
+                return render(request, self.template_name, {"form": form, "error": "El DNI ingresado no existe"})
             mascota.save()
-            return render(request,self.template_name,{'mensaje':'Mascota creada correctamente'})
+            return render(request, self.template_name, {'mensaje': 'Mascota creada correctamente'})
         else:
-            return render(request,self.template_name,{"form":form})
-        
+            return render(request, self.template_name, {"form": form})
 
-        
-def json_buscar_mascota(request,microchip):
+
+class BorrarMascota(DeleteView):
+    queryset = Mascota.objects.all()
+    success_url = reverse_lazy('mascotas:carga')
+    template_name = 'mascotas/carga_admin.html'
+    pk_url_kwarg = 'pk'
+
+    def get(self, request, *args, **kwargs):
+        self.delete(self, request, *args, **kwargs)
+        return render(request, self.template_name, {"mensaje": "Mascota eliminada correctamente"})
+
+
+def json_buscar_mascota(request, microchip):
     '''Metodo para buscar mascotas por microchip'''
     data = {}
     if request.method == 'GET':
@@ -46,10 +57,9 @@ def json_buscar_mascota(request,microchip):
                 'tipo_plan',
                 'duenio__dni',
                 'edad',
-            )
-        
+        )
 
         if not data:
-            return JsonResponse(list(data),safe=False)
-        
-        return JsonResponse(list(data),safe=False)
+            return JsonResponse(list(data), safe=False)
+
+        return JsonResponse(list(data), safe=False)

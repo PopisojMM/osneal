@@ -85,7 +85,7 @@
 {% endif %}
 
 {{ form.errors }}
-<form method="POST" >
+<form method="POST" action="{% url 'mascotas:carga' %}">
   {% csrf_token %}
   <div class="form-group card ">
     <div class="form-group">
@@ -96,60 +96,47 @@
   </div>
   <div class="form-group">
     <label for="nombre">Nombre de la mascota:</label>
-    <input 
-    {% if form.nombre.value %}
-    value="{{form.nombre.value}}" 
-    {% endif %}
-       type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese el nombre de la mascota">
+    <input {% if form.nombre.value %} value="{{form.nombre.value}}" {% endif %} type="text" class="form-control"
+      id="nombre" name="nombre" placeholder="Ingrese el nombre de la mascota">
   </div>
   <div class="form-group">
     <label for="microchip">Microchip:</label>
-    <input
-    {% if form.micro_chip.value %}
-    value="{{form.micro_chip.value}}" 
-    {% endif %} " type="text" class="form-control" id="microchip" name="micro_chip"
-      placeholder="Ingrese el número de microchip">
+    <input {% if form.micro_chip.value %} value="{{form.micro_chip.value}}" {% endif %} " type=" text"
+      class="form-control" id="microchip" name="micro_chip" placeholder="Ingrese el número de microchip">
   </div>
   <div class="form-group">
     <label for="especie">Especie:</label>
-    <input 
-    {% if form.especie.value %}
-    value="{{form.especie.value}}" 
-    {% endif %}" type="text" class="form-control" id="especie" name="especie" placeholder="Ingrese la especie de la mascota">
+    <input {% if form.especie.value %} value="{{form.especie.value}}" {% endif %}" type="text" class="form-control"
+      id="especie" name="especie" placeholder="Ingrese la especie de la mascota">
   </div>
   <div class="form-group">
     <label for="raza">Raza:</label>
-    <input 
-    {% if form.raza.value %}
-    value="{{form.raza.value}}" 
-    {% endif %}" type="text" class="form-control" id="raza" name="raza" placeholder="Ingrese la raza de la mascota">
+    <input {% if form.raza.value %} value="{{form.raza.value}}" {% endif %}" type="text" class="form-control" id="raza"
+      name="raza" placeholder="Ingrese la raza de la mascota">
   </div>
   <div class="form-group">
     <label for="pelaje">Pelaje:</label>
-    <input 
-    {% if form.pelaje.value %}
-    value="{{form.pelaje.value}}" 
-    {% endif %} type="text" class="form-control" id="pelaje" name="pelaje" placeholder="Ingrese el pelaje de la mascota">
+    <input {% if form.pelaje.value %} value="{{form.pelaje.value}}" {% endif %} type="text" class="form-control"
+      id="pelaje" name="pelaje" placeholder="Ingrese el pelaje de la mascota">
   </div>
   <div class="form-group">
     <label for="fecha-nacimiento">Fecha de nacimiento:</label>
     <input value="
     {% if form.fecha_nacimiento.value %}
-    value="{{form.fecha_nacimiento.value}}" 
-    {% endif %}" type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento">
+    value=" {{form.fecha_nacimiento.value}}" {% endif %}" type="date" class="form-control" id="fecha_nacimiento"
+      name="fecha_nacimiento">
   </div>
   <div class="form-group">
     <label for="plan">Tipo de Plan:</label>
-    <input {% if form.pelaje.value %}
-    value="{{form.pelaje.value}}" 
-    {% endif %}" type="text" class="form-control" id="plan" name="tipo_plan" placeholder="Ingrese el tipo de Plan">
+    <input {% if form.pelaje.value %} value="{{form.pelaje.value}}" {% endif %}" type="text" class="form-control"
+      id="plan" name="tipo_plan" placeholder="Ingrese el tipo de Plan">
   </div>
-  
+
   <button type="submit" class="btn btn-primary">Agregar mascota</button>
 </form>
 
 <div class="input-group mb-3">
-  <input id="id_mascota_buscada"  type="text" class="form-control" placeholder="Ingrese el Microchip de la mascota">
+  <input id="id_mascota_buscada" type="text" class="form-control" placeholder="Ingrese el Microchip de la mascota">
   <div class="input-group-append">
     <button id="btn_buscar_mascota" class="btn btn-outline-secondary" type="button">Buscar</button>
   </div>
@@ -224,7 +211,7 @@
           dataType: 'json',
           success: function (data) {
             data.forEach(element => {
-             fila =`<tr >\
+              fila = `<tr >\
                           <td>${element.nombre}</td>\
                           <td>${element.micro_chip}</td>\
                           <td>${element.especie}</td>\
@@ -233,21 +220,27 @@
                           <td>${element.edad}</td>\
                           <td>\
                             <a href="#" class="btn btn-outline-primary btn-sm">Editar</a>\
-                            <a href="#" class="btn btn-outline-danger btn-sm">Eliminar</a>\
+                            <a class="btn btn-outline-danger btn-sm eliminar-mascota" href="/mascotas/${element.id}/borrar/" data-confirm="Vas a eliminiar ${element.nombre}" >Eliminar</a>\
                           </td>
                         </tr>`
-                console.log(fila)
-                document.getElementById('busqueda_mascotas').innerHTML += fila;
-
+              document.getElementById('busqueda_mascotas').innerHTML += fila;
+            });
+            new jBox('Confirm', {
+              confirmButton: 'Eliminar',
+              cancelButton: 'No'
             });
           }
         });
       }
     });
+
+
+    // $('#busqueda_mascotas').on('click', '.eliminar-mascota', function () {
+    //   console.log('click');
+    //   // aquí puedes agregar el código para mostrar el modal de confirmación y realizar la eliminación de la mascota si el usuario confirma.
+    // });
   });
+
+
 </script>
 {% endblock contenido %}
-
-
-{% block js %}
-{% endblock js %}
