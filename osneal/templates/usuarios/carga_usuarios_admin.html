@@ -13,6 +13,8 @@
 {% endif %}
   
 
+
+{% if user_form.errors %}
 <div class="alert alert-danger" role="alert">
   <ul>
     {% for field, errors in user_form.errors.items %}
@@ -22,6 +24,9 @@
     {% endfor %}
   </ul>
 </div>
+{% endif %}
+  
+
 
 <form method="POST" action="{% url 'usuarios:crear_usuario' %}">
   {% csrf_token %}

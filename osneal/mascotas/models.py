@@ -1,8 +1,6 @@
 from django.db import models
 from usuarios.models import Usuario
-from django import forms
 from django.utils import timezone
-
 class Mascota(models.Model):
     '''Clase para las mascotas'''
     OPCIONES_SEXO=(
@@ -31,26 +29,22 @@ class Mascota(models.Model):
     fecha_modificacion = models.DateField(auto_now=True)
     fecha_baja = models.DateField(null=True)
     activo = models.BooleanField(default=True)
+    edad = models.IntegerField(blank=True, null=True)
 
     def calcular_edad(self):
         '''Metodo para calcular la edad de la mascota'''
-        hoy = timezone.now().date()
-        edad = hoy.year - self.fecha_nacimiento.year
-        if hoy < timezone.datetime(hoy.year, self.fecha_nacimiento.month, self.fecha_nacimiento.day).date():
-            edad -= 1
-        return edad
+        if  self.fecha_nacimiento:
+            hoy = timezone.now().date()
+            edad = hoy.year - self.fecha_nacimiento.year
+            if hoy < timezone.datetime(hoy.year, self.fecha_nacimiento.month, self.fecha_nacimiento.day).date():
+                edad -= 1
+            self.edad =  edad
     
+    def save(self, *args, **kwargs):
+        '''Metodo para guardar la edad de la mascota'''
+        self.calcular_edad()
+        super(Mascota, self).save(*args, **kwargs)
 
-class MascotaForm(forms.ModelForm):
-    '''Formulario para crear una mascota'''
-    class Meta:
-        model = Mascota
-        fields = '__all__'
-        exclude = ('duenio',
-                   'fecha_ingreso',
-                   'fecha_modificacion',
-                   'fecha_baja',
-                   'activo')
 
 class Vacuna(models.Model):
     '''Clase para las vacunas'''

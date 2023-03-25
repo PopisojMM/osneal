@@ -69,7 +69,7 @@ class CrearUsuarioView(CreateView):
             return render(request,
                           self.template_name,
                           {
-                              'user_form': user_form,
+                              'user_form': UserForm(),
                               'mensaje' : 'Usuario creado correctamente'
                             }
                           )
