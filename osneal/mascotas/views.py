@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView, DeleteView
+from django.views.generic import CreateView, DeleteView, UpdateView
 from mascotas.forms import MascotaForm
 from mascotas.models import Mascota
 from usuarios.models import Usuario
@@ -41,6 +41,22 @@ class BorrarMascota(DeleteView):
         self.delete(self, request, *args, **kwargs)
         return render(request, self.template_name, {"mensaje": "Mascota eliminada correctamente"})
 
+
+class ModificarMascota(UpdateView):
+    '''Clase para modificar mascotas'''
+    model = Mascota
+    template_name = 'mascotas/carga_admin.html'
+    success_url = reverse_lazy('mascotas:carga')
+    form_class = MascotaForm
+    pk_url_kwarg = 'pk'
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        self.object = form.save()
+        context = self.get_context_data()
+        context = {'mensaje': 'Mascota modificada correctamente'}
+        self.object = form.save()
+        return render(self.request, self.template_name, context)
 
 def json_buscar_mascota(request, microchip):
     '''Metodo para buscar mascotas por microchip'''

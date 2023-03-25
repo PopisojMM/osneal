@@ -86,8 +86,15 @@ class EditarUsuarioView(UpdateView):
     '''
     form_class = UserForm
     template_name = 'usuarios/editar_usuario_admin.html'
-    success_url = reverse_lazy('usuarios:crear_usuario')
     queryset = Usuario.objects.all()
+
+    def form_valid(self, form):
+        """If the form is valid, save the associated model."""
+        self.object = form.save()
+        context = self.get_context_data()
+        context = {'mensaje': 'Usario modificado correctamente'}
+        self.object = form.save()
+        return render(self.request, 'usuarios/carga_usuarios_admin.html', context)
 
 
 class BorrarUsuarioView(DeleteView):

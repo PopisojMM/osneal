@@ -71,7 +71,7 @@
 {% block contenido %}
 
 <div class="text">ALTA DE MASCOTAS</div>
-
+{{form.fecha_nacimiento.value|date:'d/m/Y'}}
 {% if mensaje %}
 <div class="alert alert-success" role="alert">
   {{ mensaje }}
@@ -85,12 +85,13 @@
 {% endif %}
 
 {{ form.errors }}
-<form method="POST" action="{% url 'mascotas:carga' %}">
+<form method="POST" action="{% if object.duenio.dni %}{% url 'mascotas:modificar' object.id %}{% else %}{% url 'mascotas:carga' %}{%endif%}">
   {% csrf_token %}
   <div class="form-group card ">
     <div class="form-group">
       <label for="dni">DNI del Usuario Propietario:</label>
-      <input type="text" class="form-control" id="dni" name="dni" placeholder="Ingrese el DNI del usuario">
+      <input type="text" class="form-control" id="dni" name="dni" placeholder="Ingrese el DNI del usuario"
+        value="{%if object.duenio.dni%}{{object.duenio.dni}}{% else %}{{form.dni.value}}{%endif%}" {% if object.duenio.dni %} disabled {% endif %}>
     </div>
 
   </div>
@@ -121,18 +122,16 @@
   </div>
   <div class="form-group">
     <label for="fecha-nacimiento">Fecha de nacimiento:</label>
-    <input value="
-    {% if form.fecha_nacimiento.value %}
-    value=" {{form.fecha_nacimiento.value}}" {% endif %}" type="date" class="form-control" id="fecha_nacimiento"
+    <input value="{{form.fecha_nacimiento.value|date:'Y-m-d'}}" type="date" class="form-control" id="fecha_nacimiento"
       name="fecha_nacimiento">
   </div>
   <div class="form-group">
     <label for="plan">Tipo de Plan:</label>
-    <input {% if form.pelaje.value %} value="{{form.pelaje.value}}" {% endif %}" type="text" class="form-control"
-      id="plan" name="tipo_plan" placeholder="Ingrese el tipo de Plan">
+    <input value="{{object.tipo_plan}}" type="text" class="form-control" id="plan" name="tipo_plan" placeholder="Ingrese el tipo de Plan">
   </div>
 
-  <button type="submit" class="btn btn-primary">Agregar mascota</button>
+<button type="submit" class="btn btn-primary">Guardar</button>
+
 </form>
 
 <div class="input-group mb-3">
@@ -219,8 +218,8 @@
                           <td>${element.pelaje}</td>\
                           <td>${element.edad}</td>\
                           <td>\
-                            <a href="#" class="btn btn-outline-primary btn-sm">Editar</a>\
-                            <a class="btn btn-outline-danger btn-sm eliminar-mascota" href="/mascotas/${element.id}/borrar/" data-confirm="Vas a eliminiar ${element.nombre}" >Eliminar</a>\
+                            <a href="/mascotas/${element.id}/modificar/" class="btn btn-outline-primary btn-sm">Editar</a>\
+                            <a class="btn btn-outline-danger btn-sm" href="/mascotas/${element.id}/borrar/" data-confirm="Vas a eliminiar ${element.nombre}" >Eliminar</a>\
                           </td>
                         </tr>`
               document.getElementById('busqueda_mascotas').innerHTML += fila;
@@ -234,11 +233,6 @@
       }
     });
 
-
-    // $('#busqueda_mascotas').on('click', '.eliminar-mascota', function () {
-    //   console.log('click');
-    //   // aquí puedes agregar el código para mostrar el modal de confirmación y realizar la eliminación de la mascota si el usuario confirma.
-    // });
   });
 
 

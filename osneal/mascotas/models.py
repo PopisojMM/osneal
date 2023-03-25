@@ -19,7 +19,7 @@ class Mascota(models.Model):
     micro_chip = models.CharField(max_length=250,unique=True)
     especie = models.CharField(max_length=250)
     raza = models.CharField(max_length=250)
-    pelaje = models.ImageField(upload_to='mascotas', blank=True, null=True)
+    pelaje = models.CharField( blank=True, null=True,max_length=250)
     fecha_nacimiento = models.DateField(null=True)
     tipo_plan = models.CharField(max_length=250, choices=OPCIONES_TIPO_PLAN,default='Plan Base')
     # genero = models.CharField(max_length=10, choices=OPCIONES_SEXO,null=True, blank=True)
