@@ -3,7 +3,7 @@
 
 {% block contenido %}
 
-<div class="text">ALTA DE USUARIOS</div>
+<div class="text">GESTION DE USUARIOS - OSNeal  </div>
 
 
 {% if mensaje %}
@@ -13,8 +13,6 @@
 {% endif %}
   
 
-
-{% if user_form.errors %}
 <div class="alert alert-danger" role="alert">
   <ul>
     {% for field, errors in user_form.errors.items %}
@@ -24,10 +22,18 @@
     {% endfor %}
   </ul>
 </div>
-{% endif %}
-  
 
+<div class="text">BUSQUEDA DE USUARIOS</div>
+<form class="form-inline" id="search-form" method="GET" action="{% url 'usuarios:buscar_usuario' %}">
+  <div class="form-group mb-2">
+    <label for="search-dni" class="sr-only">DNI</label>
+    <input name="dni_usuario" type="text" class="form-control" id="search-dni"
+      placeholder="Ingrese el DNI del Usuario que desea MODIFICAR o ELIMINAR">
+  </div>
+  <button type="submit" class="btn btn-primary mb-2">Buscar</button>
+</form>
 
+<div class="text">CARGA DE NUEVOS USUARIOS</div>
 <form method="POST" action="{% url 'usuarios:crear_usuario' %}">
   {% csrf_token %}
   <div class="form-group">
@@ -129,13 +135,6 @@
   </div>
 
 </form>
-<form class="form-inline" id="search-form" method="GET" action="{% url 'usuarios:buscar_usuario' %}">
-  <div class="form-group mb-2">
-    <label for="search-dni" class="sr-only">DNI</label>
-    <input name="dni_usuario" type="text" class="form-control" id="search-dni"
-      placeholder="Ingrese el DNI del Usuario que desea MODIFICAR o ELIMINAR">
-  </div>
-  <button type="submit" class="btn btn-primary mb-2">Buscar</button>
-</form>
+
 </div>
 {% endblock contenido %}

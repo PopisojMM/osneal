@@ -71,73 +71,63 @@
 {% block contenido %}
 
 <div class="text">ALTA DE MASCOTAS</div>
-{{form.fecha_nacimiento.value|date:'d/m/Y'}}
+
 {% if mensaje %}
 <div class="alert alert-success" role="alert">
   {{ mensaje }}
 </div>
 {% endif %}
-
-{% if error %}
-<div class="alert alert-danger" role="alert">
-  {{ error }}
-</div>
-{% endif %}
-
 {{ form.errors }}
-<form method="POST" action="{% if object.duenio.dni %}{% url 'mascotas:modificar' object.id %}{% else %}{% url 'mascotas:carga' %}{%endif%}">
+<form method="POST" >
   {% csrf_token %}
   <div class="form-group card ">
     <div class="form-group">
       <label for="dni">DNI del Usuario Propietario:</label>
-      <input type="text" class="form-control" id="dni" name="dni" placeholder="Ingrese el DNI del usuario"
-        value="{%if object.duenio.dni%}{{object.duenio.dni}}{% else %}{{form.dni.value}}{%endif%}" {% if object.duenio.dni %} disabled {% endif %}>
+      <input type="text" class="form-control" id="dni" name="dni" placeholder="Ingrese el DNI del usuario">
     </div>
 
   </div>
   <div class="form-group">
     <label for="nombre">Nombre de la mascota:</label>
-    <input {% if form.nombre.value %} value="{{form.nombre.value}}" {% endif %} type="text" class="form-control"
-      id="nombre" name="nombre" placeholder="Ingrese el nombre de la mascota">
+    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese el nombre de la mascota">
   </div>
   <div class="form-group">
     <label for="microchip">Microchip:</label>
-    <input {% if form.micro_chip.value %} value="{{form.micro_chip.value}}" {% endif %} " type=" text"
-      class="form-control" id="microchip" name="micro_chip" placeholder="Ingrese el número de microchip">
+    <input type="text" class="form-control" id="microchip" name="micro_chip"
+      placeholder="Ingrese el número de microchip">
   </div>
   <div class="form-group">
     <label for="especie">Especie:</label>
-    <input {% if form.especie.value %} value="{{form.especie.value}}" {% endif %}" type="text" class="form-control"
-      id="especie" name="especie" placeholder="Ingrese la especie de la mascota">
+    <input type="text" class="form-control" id="especie" name="especie" placeholder="Ingrese la especie de la mascota">
   </div>
   <div class="form-group">
     <label for="raza">Raza:</label>
-    <input {% if form.raza.value %} value="{{form.raza.value}}" {% endif %}" type="text" class="form-control" id="raza"
-      name="raza" placeholder="Ingrese la raza de la mascota">
+    <input type="text" class="form-control" id="raza" name="raza" placeholder="Ingrese la raza de la mascota">
   </div>
   <div class="form-group">
     <label for="pelaje">Pelaje:</label>
-    <input {% if form.pelaje.value %} value="{{form.pelaje.value}}" {% endif %} type="text" class="form-control"
-      id="pelaje" name="pelaje" placeholder="Ingrese el pelaje de la mascota">
+    <input type="text" class="form-control" id="pelaje" name="pelaje" placeholder="Ingrese el pelaje de la mascota">
   </div>
   <div class="form-group">
     <label for="fecha-nacimiento">Fecha de nacimiento:</label>
-    <input value="{{form.fecha_nacimiento.value|date:'Y-m-d'}}" type="date" class="form-control" id="fecha_nacimiento"
-      name="fecha_nacimiento">
+    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento">
   </div>
   <div class="form-group">
     <label for="plan">Tipo de Plan:</label>
-    <input value="{{object.tipo_plan}}" type="text" class="form-control" id="plan" name="tipo_plan" placeholder="Ingrese el tipo de Plan">
+    <input type="text" class="form-control" id="plan" name="tipo_plan" placeholder="Ingrese el tipo de Plan">
   </div>
-
-<button type="submit" class="btn btn-primary">Guardar</button>
-
+  
+  <button type="submit" class="btn btn-primary">Agregar mascota</button>
 </form>
 
+<p>
+
+
+</p>
 <div class="input-group mb-3">
-  <input id="id_mascota_buscada" type="text" class="form-control" placeholder="Ingrese el Microchip de la mascota">
+  <input type="text" class="form-control" placeholder="Ingrese el Microchip de la mascota">
   <div class="input-group-append">
-    <button id="btn_buscar_mascota" class="btn btn-outline-secondary" type="button">Buscar</button>
+    <button class="btn btn-outline-secondary" type="button">Buscar</button>
   </div>
 </div>
 
@@ -153,9 +143,43 @@
       <th>Acciones</th>
     </tr>
   </thead>
-  <tbody id="busqueda_mascotas">
-
-
+  <tbody>
+    <tr>
+      <td>Fido</td>
+      <td>123456789</td>
+      <td>Perro</td>
+      <td>Poodle</td>
+      <td>Blanco</td>
+      <td>5 años</td>
+      <td>
+        <a href="#" class="btn btn-outline-primary btn-sm">Editar</a>
+        <a href="#" class="btn btn-outline-danger btn-sm">Eliminar</a>
+      </td>
+    </tr>
+    <tr>
+      <td>Mimi</td>
+      <td>987654321</td>
+      <td>Gato</td>
+      <td>Siamés</td>
+      <td>Negro</td>
+      <td>3 años</td>
+      <td>
+        <a href="#" class="btn btn-outline-primary btn-sm">Editar</a>
+        <a href="#" class="btn btn-outline-danger btn-sm">Eliminar</a>
+      </td>
+    </tr>
+    <tr>
+      <td>Lucky</td>
+      <td>246813579</td>
+      <td>Perro</td>
+      <td>Golden Retriever</td>
+      <td>Dorado</td>
+      <td>7 años</td>
+      <td>
+        <a href="#" class="btn btn-outline-primary btn-sm">Editar</a>
+        <a href="#" class="btn btn-outline-danger btn-sm">Eliminar</a>
+      </td>
+    </tr>
   </tbody>
 </table>
 
@@ -174,7 +198,7 @@
             data.forEach(element => {
               var line = $('<div>').addClass("list border-bottom mb-2")
               var div = $('<div>').addClass('d-flex align-items-center results');
-              var i = $('<i>').addClass('fas fa-users');
+              var i = $('<i>').addClass('fas fa-university');
               var div2 = $('<div>').addClass('d-flex flex-column ml-3');
               var span = $('<span>').text(`${element.nombre} ${element.apellido}`);
               var small = $('<small>').text(`${element.dni}`);
@@ -197,44 +221,10 @@
         });
       }
     });
-
-
-    $('#btn_buscar_mascota').click(function () {
-      console.log('click')
-      let fila = ''
-      $('#busqueda_mascotas').empty()
-      var query = $('#id_mascota_buscada').val();
-      if (query.length >= 3) {
-        $.ajax({
-          url: `/mascotas/json_buscar_mascota/${query}`,
-          dataType: 'json',
-          success: function (data) {
-            data.forEach(element => {
-              fila = `<tr >\
-                          <td>${element.nombre}</td>\
-                          <td>${element.micro_chip}</td>\
-                          <td>${element.especie}</td>\
-                          <td>${element.raza}</td>\
-                          <td>${element.pelaje}</td>\
-                          <td>${element.edad}</td>\
-                          <td>\
-                            <a href="/mascotas/${element.id}/modificar/" class="btn btn-outline-primary btn-sm">Editar</a>\
-                            <a class="btn btn-outline-danger btn-sm" href="/mascotas/${element.id}/borrar/" data-confirm="Vas a eliminiar ${element.nombre}" >Eliminar</a>\
-                          </td>
-                        </tr>`
-              document.getElementById('busqueda_mascotas').innerHTML += fila;
-            });
-            new jBox('Confirm', {
-              confirmButton: 'Eliminar',
-              cancelButton: 'No'
-            });
-          }
-        });
-      }
-    });
-
   });
-
-
 </script>
 {% endblock contenido %}
+
+
+{% block js %}
+{% endblock js %}

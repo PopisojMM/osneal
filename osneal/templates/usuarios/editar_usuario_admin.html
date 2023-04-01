@@ -14,7 +14,7 @@
   
 {{form.errors}}
 
-<form method="POST" >
+<form method="POST" action="{% url 'usuarios:editar_usuario' object.pk %}">
   {% csrf_token %}
   <div class="form-group">
     <label for="nombre">Nombre:</label>
@@ -34,7 +34,7 @@
   </div>
   <div class="form-group">
     <label for="fecha-nacimiento">Fecha de nacimiento:</label>
-    <input name="fecha_nacimiento" value="{{object.fecha_nacimiento|date:'Y-m-d'}}" type="date" class="form-control" id="fecha-nacimiento">
+    <input name="fecha_nacimiento" value="{{object.fecha_nacimiento}}" type="date" class="form-control" id="fecha-nacimiento">
   </div>
   <div class="form-group">
     <label for="direccion">Dirección:</label>
@@ -68,9 +68,9 @@
     <label for="opciones">Tipo de Usuario:</label>
     <select name="tipo_usuario" class="form-control" id="opciones">
       <option value="">Seleccione que tipo de usuario está por Cargar</option>
-      <option {%if object.tipo_usuario == "administrador"%} selected {%endif%} value="administrador">Administrador</option>
-      <option {%if object.tipo_usuario == "veterinario"%} selected {%endif%} value="veterinario">Veterinario/Peluquero</option>
-      <option {%if object.tipo_usuario == "propietario"%} selected {%endif%} value="propietario">Propietario</option>
+      <option value="administrador">Administrador</option>
+      <option value="veterinario">Veterinario/Peluquero</option>
+      <option value="propietario">Propietario</option>
     </select>
   </div>
   <div class="form-group">
