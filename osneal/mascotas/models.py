@@ -1,6 +1,7 @@
 from django.db import models
 from usuarios.models import Usuario
 from django.utils import timezone
+
 class Mascota(models.Model):
     '''Clase para las mascotas'''
     OPCIONES_SEXO=(
@@ -62,6 +63,8 @@ class Vacuna(models.Model):
     fecha_vacuna = models.DateField(null=True)
     fecha_proxima_vacuna = models.DateField(null=True)
     nro_vacuna = models.CharField(max_length=250,null=True,blank=True)
+
+
 
 class HistorialClinico(models.Model):
     '''Clase para el historial clinico'''

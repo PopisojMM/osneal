@@ -34,7 +34,7 @@
   </div>
   <div class="form-group">
     <label for="fecha-nacimiento">Fecha de nacimiento:</label>
-    <input name="fecha_nacimiento" value="{{object.fecha_nacimiento}}" type="date" class="form-control" id="fecha-nacimiento">
+    <input name="fecha_nacimiento" value="{{object.fecha_nacimiento|date:'Y-m-d'}}" type="date" class="form-control" id="fecha-nacimiento">
   </div>
   <div class="form-group">
     <label for="direccion">Dirección:</label>

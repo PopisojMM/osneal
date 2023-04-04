@@ -12,7 +12,7 @@
 </div>
 {% endif %}
   
-
+{% if user_form.errors %}
 <div class="alert alert-danger" role="alert">
   <ul>
     {% for field, errors in user_form.errors.items %}
@@ -22,6 +22,7 @@
     {% endfor %}
   </ul>
 </div>
+{% endif %}
 
 <div class="text">BUSQUEDA DE USUARIOS</div>
 <form class="form-inline" id="search-form" method="GET" action="{% url 'usuarios:buscar_usuario' %}">

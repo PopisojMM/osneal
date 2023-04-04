@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView, DeleteView, UpdateView
+from django.views.generic import CreateView, DeleteView, UpdateView, ListView
 from mascotas.forms import MascotaForm
 from mascotas.models import Mascota
 from usuarios.models import Usuario
@@ -45,8 +45,7 @@ class BorrarMascota(DeleteView):
 class ModificarMascota(UpdateView):
     '''Clase para modificar mascotas'''
     model = Mascota
-    template_name = 'mascotas/carga_admin.html'
-    success_url = reverse_lazy('mascotas:carga')
+    template_name = 'mascotas/modificar.html'
     form_class = MascotaForm
     pk_url_kwarg = 'pk'
 
@@ -56,7 +55,25 @@ class ModificarMascota(UpdateView):
         context = self.get_context_data()
         context = {'mensaje': 'Mascota modificada correctamente'}
         self.object = form.save()
-        return render(self.request, self.template_name, context)
+        return render(self.request, 'mascotas/carga_admin.html', context)
+    
+
+class BuscarMascota(ListView):
+    '''Clase para buscar mascotas'''
+    model = Mascota
+    template_name = 'mascotas/resultado_busqueda_mascotas.html'
+    context_object_name = 'mascotas'
+
+    def get_queryset(self):
+        '''Metodo para buscar mascotas'''
+        queryset = super().get_queryset()
+        busqueda = self.request.GET.get('mirco_chip',None)
+        if busqueda:
+            return queryset.filter(micro_chip__contains=busqueda)
+        else:
+            return queryset
+        
+
 
 def json_buscar_mascota(request, microchip):
     '''Metodo para buscar mascotas por microchip'''

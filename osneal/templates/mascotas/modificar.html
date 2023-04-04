@@ -1,0 +1,81 @@
+{% extends 'dash-base.html' %}
+<!-- COMIENZA CONTENIDO DEL MENU -->
+{% load static %}
+
+{% block encabezado %}
+<style>
+  body {
+
+    background-color: #eee;
+  }
+
+  .card {
+
+    background-color: #fff;
+    padding: 15px;
+    border: none;
+  }
+
+
+
+  .list {
+
+    padding-top: 20px;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+
+  }
+
+  .border-bottom {
+
+    border-bottom: 2px solid #eee;
+  }
+
+  .list i {
+    font-size: 19px;
+    color: red;
+  }
+
+  .list small {
+
+    color: grey;
+  }
+</style>
+{% endblock encabezado %}
+
+
+{% block contenido %}
+
+<div class="text">MODIFICACION DE {{object.nombre|upper}}</div>
+
+{% if mensaje %}
+<div class="alert alert-success" role="alert">
+  {{ mensaje }}
+</div>
+{% endif %}
+{{ form.errors }}
+<form method="POST">
+  {% csrf_token %}
+  
+  {{ form.as_p }}
+
+  <button type="submit" class="btn btn-primary">Modificar mascota</button>
+</form>
+
+<div class="input-group mb-3">
+  <form action="{% url 'mascotas:buscar' %}" method="GET">
+
+
+    <input type="text" name="mirco_chip" class="form-control" placeholder="Ingrese el Microchip de la mascota">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+    </div>
+  </form>
+</div>
+
+{% endblock contenido %}
+
+
+{% block js %}
+{% endblock js %}

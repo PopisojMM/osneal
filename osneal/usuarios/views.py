@@ -129,5 +129,7 @@ class BuscarUsuarioView(ListView):
     def get_queryset(self):
         '''Devuelve los usuarios que coincidan con el criterio de búsqueda'''
         queryset = super().get_queryset()
-        queryset = queryset.filter(dni__contains=self.request.GET.get("dni_usuario"))
+        usuario_buscado = self.request.GET.get("dni_usuario",None)
+        if usuario_buscado:
+            queryset = queryset.filter(dni__contains=usuario_buscado)
         return queryset

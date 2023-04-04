@@ -4,7 +4,7 @@
 {% block contenido %}
 
 <nav class="navbar navbar-dark bg-dark">
-  <a class="navbar-brand" href="dashuser.html">Volver</a>
+  <a class="navbar-brand" href="{% url 'mascotas:carga' %}">Volver</a>
 </nav>
 <div class="container my-4">
   <h1 class="text-center">Resultados de búsqueda</h1>
@@ -26,19 +26,19 @@
         </tr>
       </thead>
       <tbody>
-        {% for usuario in usuarios %}
+        {% for mascota in mascotas %}
         <tr>
-          <td>{{usuario.nombre}} {{usuario.apellido}}</td>
-          <td>{{usuario.dni}}</td>
-          <td>{{usuario.email}}</td>
-
-          <td>{{usuario.fecha_nacimiento}}</td>
-          <td>{{usuario.direccion}}</td>
-          <td>{{usuario.provincia}}</td>
-          <td>{{usuario.localidad}}</td>
-          <td>{{usuario.telefono}}</td>
-          <td><a href="{% url 'usuarios:editar_usuario' usuario.pk %}" class="btn btn-primary">Editar</a></td>
-          <td><a class="btn btn-danger" href="{% url 'usuarios:borrar_usuario' usuario.pk %}" data-confirm="¿Realmente quieres borrar el usuario?">
+          <td>{{mascota.nombre}}</td>
+          <td>{{mascota.micro_chip}}</td>
+          <td>{{mascota.especie}}</td>
+          <td>{{mascota.raza}}</td>
+          <td>{{mascota.pelaje}}</td>
+          <td>{{mascota.edad}}</td>
+          <td>{{mascota.tipo_plan}}</td>
+          <td><a href="#" class="btn btn-primary">Ver/Administrar</a></td>
+          <td><a href="#" class="btn btn-primary">Ver/Gestionar</a></td>
+          <td><a href="{% url 'mascotas:modificar' mascota.pk %}" class="btn btn-primary">Editar</a></td>
+          <td><a class="btn btn-danger" href="{% url 'mascotas:borrar' mascota.pk %}" data-confirm="¿Realmente quieres borrar el usuario?">
             Eliminar
           </a></td>
           {% endfor %}
