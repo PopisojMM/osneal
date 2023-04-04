@@ -131,6 +131,49 @@
   </form>
 </div>
 
+
+<script>
+  $(document).ready(function () {
+    $('#dni').keyup(function () {
+      $('.list').remove()
+      $('.results').remove()
+      var query = $(this).val();
+      if (query.length >= 3) {
+        $.ajax({
+          url: `/usuarios/json_buscar_usuario/${query}`,
+          dataType: 'json',
+          success: function (data) {
+            data.forEach(element => {
+              var line = $('<div>').addClass("list border-bottom mb-2")
+              var div = $('<div>').addClass('d-flex align-items-center results');
+              var i = $('<i>').addClass('fas fa-users');
+              var div2 = $('<div>').addClass('d-flex flex-column ml-3');
+              var span = $('<span>').text(`${element.nombre} ${element.apellido}`);
+              var small = $('<small>').text(`${element.dni}`);
+
+              div.append(i);
+              div2.append(span, small);
+              div.append(div2);
+              // Ahora puedes agregar el elemento a algún contenedor en tu página, por ejemplo:
+              $('.card').append(line);
+              $('.card').append(div);
+            });
+
+            $('.results').click(function () {
+              var dni = $(this).find('small').text();
+              $('#dni').val(dni);
+              $('.list').remove()
+              $('.results').remove()
+            });
+          }
+        });
+      }
+    });
+  });
+
+
+</script>
+
 {% endblock contenido %}
 
 

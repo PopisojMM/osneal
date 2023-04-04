@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
-from mascotas.forms import MascotaForm
-from mascotas.models import Mascota
+from mascotas.forms import MascotaForm,HistorialForm
+from mascotas.models import Mascota,HistorialClinico
 from usuarios.models import Usuario
 from django.urls import reverse_lazy
 from django.http import JsonResponse
@@ -9,7 +9,7 @@ from django.http import JsonResponse
 # Create your views here.
 
 
-class CrearMAscota(CreateView):
+class CrearMascota(CreateView):
     '''Clase para crear mascotas'''
     template_name = 'mascotas/carga_admin.html'
     success_url = reverse_lazy('mascotas:carga')
@@ -96,3 +96,28 @@ def json_buscar_mascota(request, microchip):
             return JsonResponse(list(data), safe=False)
 
         return JsonResponse(list(data), safe=False)
+
+
+
+# HISTORIAL
+
+class CrearHistorial(CreateView):
+    '''Clase para crear historiales'''
+    template_name = 'mascotas/historial_medico_admin.html'
+    success_url = reverse_lazy('mascotas:carga_historial')
+    form_class = HistorialForm
+
+    def post(self, request, *args, **kwargs):
+        '''crear el historial de la mascota'''
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            print(request.POST.get("microchip"))
+            historial = form.save(commit=False)
+            # try:
+            historial.mascota = Mascota.objects.get(micro_chip=request.POST.get("microchip"))
+            # except:
+            # return render(request, self.template_name, {"form": form, "error": "El microchip ingresado no existes"})
+            historial.save()
+            return render(request, self.template_name, {'mensaje': 'Mascota creada correctamente'})
+        else:
+            return render(request, self.template_name, {"form": form})

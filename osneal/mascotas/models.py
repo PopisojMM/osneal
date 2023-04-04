@@ -70,4 +70,5 @@ class HistorialClinico(models.Model):
     '''Clase para el historial clinico'''
     mascota = models.ForeignKey(Mascota, on_delete=models.CASCADE)
     fecha_historial = models.DateField(null=True)
-    descripcion = models.TextField(null=True, blank=True)
+    diagnostico = models.CharField(null=True, blank=False,max_length=250)
+    tratamiento = models.TextField(null=True, blank=True)

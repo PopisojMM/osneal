@@ -1,5 +1,5 @@
 from django import forms
-from mascotas.models import Mascota, Vacuna
+from mascotas.models import Mascota, Vacuna,HistorialClinico
 
 
 class MascotaForm(forms.ModelForm):
@@ -40,3 +40,10 @@ class VacunaForm(forms.ModelForm):
             'fecha_proxima_vacuna': forms.DateInput(attrs={'class': 'form-control'}),
             'nro_vacuna': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+
+class HistorialForm(forms.ModelForm):
+    class Meta:
+        model=  HistorialClinico
+        fields = '__all__'
+        exclude = ('mascota',)
