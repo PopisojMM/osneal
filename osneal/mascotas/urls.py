@@ -22,7 +22,7 @@ urlpatterns = [
     path('carga_historial/', CrearHistorial.as_view(),name='carga_historial'),
     path('json_buscar_mascota/<microchip>',json_buscar_mascota,name='json_buscar_mascota'),
     path('buscar/', BuscarMascota.as_view(),name='buscar'),
-    path('carga/', CrearVacunaView.as_view(),name='carga'),
+    path('carga_vacuna/', CrearVacunaView.as_view(),name='carga_vacuna'),
     re_path(
         r'^mascotas-autocomplete/$',
         MascotasAutocomplete.as_view(),
