@@ -38,7 +38,7 @@ class VacunaForm(forms.ModelForm):
         model = Vacuna
         fields = '__all__'
         widgets = {
-            'mascota':  autocomplete.ModelSelect2(url=reverse_lazy('mascotas:mascotas-autocomplete'),),
+            'mascota':  autocomplete.ModelSelect2(url=reverse_lazy('mascotas:mascotas-autocomplete')),
             'tipo_vacuna': forms.Select(attrs={'class': 'form-control'}),
             'fecha_vacuna': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'fecha_proxima_vacuna': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
