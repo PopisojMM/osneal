@@ -70,7 +70,22 @@
 
 {% block contenido %}
 
-<div class="text">ALTA DE MASCOTAS</div>
+<div class="text">GESTION DE MASCOTAS - OSNeAl</div>
+
+<div class="text">BUSCADOR DE MASCOTAS</div>
+ 
+  <div class="input-group mb-3">
+    <form action="{% url 'mascotas:buscar' %}" method="GET">
+      <input type="text" name="mirco_chip" class="form-control" placeholder="Ingrese el Microchip de la mascota">
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="submit">Buscar</button>
+      </div>
+    </form>
+  </div>
+
+
+
+<div class="text">CARGA DE MASCOTAS A PROPIETARIOS</div>
 
 {% if mensaje %}
 <div class="alert alert-success" role="alert">
@@ -120,16 +135,7 @@
   <button type="submit" class="btn btn-primary">Agregar mascota</button>
 </form>
 
-<div class="input-group mb-3">
-  <form action="{% url 'mascotas:buscar' %}" method="GET">
 
-
-    <input type="text" name="mirco_chip" class="form-control" placeholder="Ingrese el Microchip de la mascota">
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="submit">Buscar</button>
-    </div>
-  </form>
-</div>
 
 
 <script>

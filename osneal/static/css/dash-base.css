@@ -239,7 +239,7 @@ body{
   background:none;
 }
 .home_content{
-  position:absolute;
+  position:relative;
   height:100%;
   width:calc(100% - 78px);
   left:78px;
