@@ -64,6 +64,8 @@ DJANGO_APPS = [
     "django.forms",
 ]
 THIRD_PARTY_APPS = [
+    'dal',
+    'dal_select2',
 ]
 
 LOCAL_APPS = [

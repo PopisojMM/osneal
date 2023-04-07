@@ -1,5 +1,8 @@
 from django import forms
 from mascotas.models import Mascota, Vacuna,HistorialClinico
+from dal import autocomplete
+from django.urls import reverse_lazy
+
 
 
 class MascotaForm(forms.ModelForm):
@@ -33,11 +36,12 @@ class MascotaForm(forms.ModelForm):
 class VacunaForm(forms.ModelForm):
     class Meta:
         model = Vacuna
-        fields = ('tipo_vacuna', 'fecha_vacuna', 'fecha_proxima_vacuna', 'nro_vacuna')
+        fields = '__all__'
         widgets = {
+            'mascota':  autocomplete.ModelSelect2(url=reverse_lazy('mascotas:mascotas-autocomplete'),),
             'tipo_vacuna': forms.Select(attrs={'class': 'form-control'}),
-            'fecha_vacuna': forms.DateInput(attrs={'class': 'form-control'}),
-            'fecha_proxima_vacuna': forms.DateInput(attrs={'class': 'form-control'}),
+            'fecha_vacuna': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'fecha_proxima_vacuna': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'nro_vacuna': forms.TextInput(attrs={'class': 'form-control'}),
         }
 

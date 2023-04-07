@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
-from mascotas.forms import MascotaForm,HistorialForm
+from mascotas.forms import MascotaForm,HistorialForm,VacunaForm
 from mascotas.models import Mascota,HistorialClinico
 from usuarios.models import Usuario
 from django.urls import reverse_lazy
 from django.http import JsonResponse
+from dal import autocomplete
+
 
 # Create your views here.
 
@@ -121,3 +123,24 @@ class CrearHistorial(CreateView):
             return render(request, self.template_name, {'mensaje': 'Mascota creada correctamente'})
         else:
             return render(request, self.template_name, {"form": form})
+        
+
+class CrearVacunaView(CreateView):
+    '''Clase para crear vacunas'''
+    template_name = 'mascotas/vacunas_admin.html'
+    success_url = reverse_lazy('mascotas:carga')
+    form_class = VacunaForm
+
+
+class MascotasAutocomplete(autocomplete.Select2QuerySetView):
+    '''Clase para autocompletar mascotas'''
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Mascota.objects.none()
+
+        qs = Mascota.objects.all()
+
+        if self.q:
+            qs = qs.filter(micro_chip__istartswith=self.q)
+
+        return qs

@@ -23,9 +23,6 @@ class Mascota(models.Model):
     pelaje = models.CharField( blank=True, null=True,max_length=250)
     fecha_nacimiento = models.DateField(null=True)
     tipo_plan = models.CharField(max_length=250, choices=OPCIONES_TIPO_PLAN,default='Plan Base')
-    # genero = models.CharField(max_length=10, choices=OPCIONES_SEXO,null=True, blank=True)
-    # color = models.CharField(max_length=50, null=True, blank=True)
-    # descripcion = models.TextField(null=True, blank=True)
     fecha_ingreso = models.DateField(auto_now_add=True, null=True)
     fecha_modificacion = models.DateField(auto_now=True)
     fecha_baja = models.DateField(null=True)
@@ -46,6 +43,9 @@ class Mascota(models.Model):
         self.calcular_edad()
         super(Mascota, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return self.micro_chip + ' - ' + self.nombre
+
 
 class Vacuna(models.Model):
     '''Clase para las vacunas'''
@@ -57,6 +57,9 @@ class Vacuna(models.Model):
         ('Antitetánica', 'Antitetánica'),
         ('Mixomatosis', 'Mixomatosis'),
     )
+
+    def __str__(self):
+        return self.tipo_vacuna
 
     mascota = models.ForeignKey(Mascota, on_delete=models.CASCADE)
     tipo_vacuna = models.CharField(max_length=250, choices=TIPO_VACUNA)
