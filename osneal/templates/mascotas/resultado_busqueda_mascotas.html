@@ -35,7 +35,7 @@
           <td>{{mascota.pelaje}}</td>
           <td>{{mascota.edad}}</td>
           <td>{{mascota.tipo_plan}}</td>
-          <td><a href="#" class="btn btn-primary">Ver/Administrar</a></td>
+          <td><a href="{% url 'mascotas:listado_vacunas' mascota.pk %}" class="btn btn-primary">Ver/Administrar</a></td>
           <td><a href="#" class="btn btn-primary">Ver/Gestionar</a></td>
           <td><a href="{% url 'mascotas:modificar' mascota.pk %}" class="btn btn-primary">Editar</a></td>
           <td><a class="btn btn-danger" href="{% url 'mascotas:borrar' mascota.pk %}" data-confirm="¿Realmente quieres borrar el usuario?">

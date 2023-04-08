@@ -1,62 +1,14 @@
 {% extends 'dash-base.html' %}
+{% load render_table from django_tables2 %}
 <!-- COMIENZA CONTENIDO DEL MENU -->
 
 {% block contenido %}
 
-<nav class="navbar navbar-dark bg-dark">
-  <a class="navbar-brand" href="{% url 'mascotas:carga' %}">Volver</a>
-</nav>
-<div class="container my-4">
-  <h1 class="text-center">Listado de vacunas</h1>
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>DNI</th>
-          <th>Correo electrónico</th>
-          <th>Especialidad</th>
-          <th>Fecha de nacimiento</th>
-          <th>Dirección</th>
-          <th>Provincia</th>
-          <th>Localidad</th>
-          <th>Celular</th>
-          <th>Editar</th>
-          <th>Eliminar</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for usuario in usuarios %}
-        <tr>
-          <td>{{usuario.nombre}} {{usuario.apellido}}</td>
-          <td>{{usuario.dni}}</td>
-          <td>{{usuario.email}}</td>
-          <td>Especialidad</th>
-          <td>{{usuario.fecha_nacimiento}}</td>
-          <td>{{usuario.direccion}}</td>
-          <td>{{usuario.provincia}}</td>
-          <td>{{usuario.localidad}}</td>
-          <td>{{usuario.telefono}}</td>
-          <td><a href="{% url 'usuarios:editar_usuario' usuario.pk %}" class="btn btn-primary">Editar</a></td>
-          <td><a class="btn btn-danger" href="{% url 'usuarios:borrar_usuario' usuario.pk %}" data-confirm="¿Realmente quieres borrar el usuario?">
-            Eliminar
-          </a></td>
-          {% endfor %}
-      </tbody>
-    </table>
-  </div>
+<div class="text">Historial de Vacunas</div>
 
-  {% endblock contenido %}
-
-  {% block js %}
-  <script>
-    new jBox('Confirm', {
-      confirmButton: 'Eliminar',
-      cancelButton: 'No'
-    });
+<div class="container">
  
-  </script>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  {% endblock js %}
+  {% render_table table %}
+
+
+{% endblock contenido %}

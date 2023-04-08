@@ -66,6 +66,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'dal',
     'dal_select2',
+    'django_tables2'
 ]
 
 LOCAL_APPS = [

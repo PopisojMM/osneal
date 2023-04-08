@@ -1,16 +1,19 @@
 from django.shortcuts import render
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
 from mascotas.forms import MascotaForm,HistorialForm,VacunaForm
-from mascotas.models import Mascota,HistorialClinico
+from mascotas.models import Mascota,Vacuna
+from mascotas.tables import VacunaTable
 from usuarios.models import Usuario
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from dal import autocomplete
+from django_tables2 import SingleTableView
+
 
 
 # Create your views here.
 
-
+# MASCOTAS 
 class CrearMascota(CreateView):
     '''Clase para crear mascotas'''
     template_name = 'mascotas/carga_admin.html'
@@ -100,6 +103,18 @@ def json_buscar_mascota(request, microchip):
         return JsonResponse(list(data), safe=False)
 
 
+class MascotasAutocomplete(autocomplete.Select2QuerySetView):
+    '''Clase para autocompletar mascotas'''
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Mascota.objects.none()
+
+        qs = Mascota.objects.all()
+
+        if self.q:
+            qs = qs.filter(micro_chip__istartswith=self.q)
+
+        return qs
 
 # HISTORIAL
 
@@ -125,6 +140,9 @@ class CrearHistorial(CreateView):
             return render(request, self.template_name, {"form": form})
         
 
+    
+
+# VACUNAS
 class CrearVacunaView(CreateView):
     '''Clase para crear vacunas'''
     template_name = 'mascotas/vacunas_admin.html'
@@ -132,15 +150,21 @@ class CrearVacunaView(CreateView):
     form_class = VacunaForm
 
 
-class MascotasAutocomplete(autocomplete.Select2QuerySetView):
-    '''Clase para autocompletar mascotas'''
+
+
+class ListarVacunasView(SingleTableView):
+    '''Clase para listar vacunas de una mascota'''
+    model = Vacuna
+    template_name = 'mascotas/listado_vacunas.html'
+    context_object_name = 'vacunas'
+    table_class = VacunaTable
+
     def get_queryset(self):
-        if not self.request.user.is_authenticated:
-            return Mascota.objects.none()
-
-        qs = Mascota.objects.all()
-
-        if self.q:
-            qs = qs.filter(micro_chip__istartswith=self.q)
-
-        return qs
+        '''Metodo para buscar mascotas'''
+        queryset = super().get_queryset()
+        busqueda = self.kwargs.get('pk')
+        print(busqueda)
+        if busqueda:
+            return queryset.filter(mascota=busqueda)
+        else:
+            return queryset

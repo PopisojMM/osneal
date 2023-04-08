@@ -9,6 +9,7 @@ from .views import (
     CrearHistorial,
     CrearVacunaView,
     MascotasAutocomplete,
+    ListarVacunasView,
     
     )
 
@@ -27,4 +28,6 @@ urlpatterns = [
         r'^mascotas-autocomplete/$',
         MascotasAutocomplete.as_view(),
         name='mascotas-autocomplete',
-    ),]
+    ),
+    path('<int:pk>/listado_vacunas/', ListarVacunasView.as_view(),name='listado_vacunas'),
+    ]
