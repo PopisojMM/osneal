@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
 from mascotas.forms import MascotaForm,HistorialForm,VacunaForm
 from mascotas.models import Mascota,Vacuna
@@ -8,6 +8,9 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from dal import autocomplete
 from django_tables2 import SingleTableView
+from django.contrib import messages
+
+
 
 
 
@@ -150,8 +153,6 @@ class CrearVacunaView(CreateView):
     form_class = VacunaForm
 
 
-
-
 class ListarVacunasView(SingleTableView):
     '''Clase para listar vacunas de una mascota'''
     model = Vacuna
@@ -168,3 +169,26 @@ class ListarVacunasView(SingleTableView):
             return queryset.filter(mascota=busqueda)
         else:
             return queryset
+        
+
+class EditarVacunaView(UpdateView):
+    '''Clase para listar vacunas de una mascota'''
+    model = Vacuna
+    template_name = 'mascotas/vacunas_admin.html'
+    form_class = VacunaForm
+    pk_url_kwarg = 'pk'
+
+
+class BorrarVacunaView(DeleteView):
+    '''Clase para eliminar vacunas de una mascota'''
+    model = Vacuna
+    pk_url_kwarg = 'pk'
+    success_message = "Vacuna eliminada correctamente"
+    template_name = 'mascotas/vacunas_admin.html'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        self.object.delete()
+        messages.success(self.request, self.success_message)
+        return redirect('mascotas:carga_vacuna')

@@ -6,11 +6,7 @@
 <div class="text">GESTION DE USUARIOS - OSNeal  </div>
 
 
-{% if mensaje %}
-<div class="alert alert-success" role="alert">
-  {{ mensaje }}
-</div>
-{% endif %}
+{% include 'includes/mensajes.html' %}
   
 {% if user_form.errors %}
 <div class="alert alert-danger" role="alert">

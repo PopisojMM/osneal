@@ -7,8 +7,16 @@
 <div class="text">Historial de Vacunas</div>
 
 <div class="container">
- 
   {% render_table table %}
 
 
 {% endblock contenido %}
+
+
+{% block js %}
+<script>
+
+  {% include 'includes/confirm_jbox.js' %}
+</script>
+{% endblock js %}
+  

@@ -1,8 +1,7 @@
 from django import forms
-from mascotas.models import Mascota, Vacuna,HistorialClinico
+from mascotas.models import Mascota, Vacuna, HistorialClinico
 from dal import autocomplete
 from django.urls import reverse_lazy
-
 
 
 class MascotaForm(forms.ModelForm):
@@ -24,7 +23,7 @@ class MascotaForm(forms.ModelForm):
                    "tipo_plan": forms.Select(attrs={'class': 'form-control'}),
                    "fecha_nacimiento": forms.DateInput(
             attrs={
-                'class': 'form-control', 
+                'class': 'form-control',
                 'type': 'date',
                 'value': "{{object.fecha_nacimiento}}",
             },
@@ -40,14 +39,24 @@ class VacunaForm(forms.ModelForm):
         widgets = {
             'mascota':  autocomplete.ModelSelect2(url=reverse_lazy('mascotas:mascotas-autocomplete')),
             'tipo_vacuna': forms.Select(attrs={'class': 'form-control'}),
-            'fecha_vacuna': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'fecha_proxima_vacuna': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'fecha_vacuna': forms.DateInput(attrs={
+                'class': 'form-control',
+                'type': 'date',
+                'value': "{{object.fecha_nacimiento}}",
+            },
+                format='%Y-%m-%d',),
+            'fecha_proxima_vacuna': forms.DateInput(attrs={
+                'class': 'form-control',
+                'type': 'date',
+                'value': "{{object.fecha_nacimiento}}",
+            },
+                format='%Y-%m-%d',),
             'nro_vacuna': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 
 class HistorialForm(forms.ModelForm):
     class Meta:
-        model=  HistorialClinico
+        model = HistorialClinico
         fields = '__all__'
         exclude = ('mascota',)
