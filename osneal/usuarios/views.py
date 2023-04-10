@@ -9,8 +9,7 @@ from django.http import JsonResponse
 
 Usuario = get_user_model()
 
-# Create your views here.
-
+# Usuarios
 
 class UserLoginView(LoginView):
     '''Clase para el login de usuarios'''
@@ -61,9 +60,9 @@ class CrearUsuarioView(CreateView):
             user = user_form.save(commit=False)
             user.set_password(str(user_form.cleaned_data['dni']))
             if user_form.cleaned_data['tipo_usuario'] == 'administrador':
-                user.is_staff = True
+                user.is_staff = False
                 user.is_admin = True
-                user.is_superuser = True
+                user.is_superuser = False
             user.is_active = True
             user.save()
             return render(request,
@@ -133,3 +132,6 @@ class BuscarUsuarioView(ListView):
         if usuario_buscado:
             queryset = queryset.filter(dni__contains=usuario_buscado)
         return queryset
+    
+
+# TURNOS

@@ -22,6 +22,8 @@ urlpatterns = [
     path('buscar_usuario/', BuscarUsuarioView.as_view(),name='buscar_usuario'),
     path('<int:pk>/editar_usuario/', EditarUsuarioView.as_view(),name='editar_usuario'),
     path('<int:pk>/borrar_usuario/', BorrarUsuarioView.as_view(),name='borrar_usuario'),
+
+    path('turnos_admin/', TemplateView.as_view(template_name='turnos/admin/turnos_admin.html'),name='turnos_admin'),
 ]
 
 
