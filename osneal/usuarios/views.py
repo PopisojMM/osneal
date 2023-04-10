@@ -6,6 +6,8 @@ from .forms import UserForm
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
+from django.contrib.messages.views import SuccessMessageMixin
+
 
 Usuario = get_user_model()
 
@@ -41,59 +43,28 @@ class UserLogoutView(LogoutView):
     next_page = reverse_lazy('usuarios:login')
 
 
-class CrearUsuarioView(CreateView):
+class CrearUsuarioView(SuccessMessageMixin,CreateView):
     '''Clase para crear usuarios.
     '''
 
     template_name = 'usuarios/carga_usuarios_admin.html'
-    queryset = None
+    model = Usuario
+    form_class = UserForm
+    success_url = reverse_lazy('usuarios:crear_usuario')
+    success_message = "Usuario creado correctamente"
+    
 
-    def get(self, request, *args, **kwargs):
-        '''Muestra el formulario para crear usuarios'''
-        user_form = UserForm()
-        return render(request, self.template_name, {'user_form': user_form})
 
-    def post(self, request, *args, **kwargs):
-        '''Procesa el formulario para crear usuarios'''
-        user_form = UserForm(request.POST)
-        if user_form.is_valid():
-            user = user_form.save(commit=False)
-            user.set_password(str(user_form.cleaned_data['dni']))
-            if user_form.cleaned_data['tipo_usuario'] == 'administrador':
-                user.is_staff = False
-                user.is_admin = True
-                user.is_superuser = False
-            user.is_active = True
-            user.save()
-            return render(request,
-                          self.template_name,
-                          {
-                              'user_form': UserForm(),
-                              'mensaje' : 'Usuario creado correctamente'
-                            }
-                          )
-        else:
-            return render(request,
-                          self.template_name,
-                          {
-                              'user_form': user_form,
-                            }
-                          )
-
-class EditarUsuarioView(UpdateView):
+class EditarUsuarioView(SuccessMessageMixin,UpdateView):
     '''Clase para editar usuarios.
     '''
     form_class = UserForm
     template_name = 'usuarios/editar_usuario_admin.html'
     queryset = Usuario.objects.all()
+    success_url = reverse_lazy('usuarios:crear_usuario')
+    success_message = "Usuario editado correctamente"
 
-    def form_valid(self, form):
-        """If the form is valid, save the associated model."""
-        self.object = form.save()
-        context = self.get_context_data()
-        context = {'mensaje': 'Usario modificado correctamente'}
-        self.object = form.save()
-        return render(self.request, 'usuarios/carga_usuarios_admin.html', context)
+
 
 
 class BorrarUsuarioView(DeleteView):

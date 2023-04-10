@@ -6,73 +6,10 @@
 <div class="text">EDITANDO USUARIO {{object.nombre}} {{object.apellido}} </div>
 
 
-{% if mensaje %}
-<div class="alert alert-success" role="alert">
-  {{ mensaje }}
-</div>
-{% endif %}
-  
-{{form.errors}}
 
 <form method="POST" action="{% url 'usuarios:editar_usuario' object.pk %}">
   {% csrf_token %}
-  <div class="form-group">
-    <label for="nombre">Nombre:</label>
-    <input name="nombre" value="{{object.nombre}}" type="text" class="form-control" id="nombre" placeholder="Ingrese su nombre completo">
-  </div>
-  <div class="form-group">
-    <label for="nombre">Apellido:</label>
-    <input name="apellido" value="{{object.apellido}}" type="text" class="form-control" id="apellido" placeholder="Ingrese su apellido completo">
-  </div>
-  <div class="form-group">
-    <label for="dni">DNI:</label>
-    <input name="dni" value="{{object.dni}}" type="text" class="form-control" id="dni" placeholder="Ingrese su número de documento">
-  </div>
-  <div class="form-group">
-    <label for="correo">Correo electrónico:</label>
-    <input name="email" value="{{object.email}}" type="email" class="form-control" id="correo" placeholder="Ingrese su correo electrónico">
-  </div>
-  <div class="form-group">
-    <label for="fecha-nacimiento">Fecha de nacimiento:</label>
-    <input name="fecha_nacimiento" value="{{object.fecha_nacimiento|date:'Y-m-d'}}" type="date" class="form-control" id="fecha-nacimiento">
-  </div>
-  <div class="form-group">
-    <label for="direccion">Dirección:</label>
-    <input name="direccion" value="{{object.direccion}}" type="text" class="form-control" id="direccion" placeholder="Ingrese su dirección completa">
-  </div>
-
-  <div class="form-group">
-    <label for="provincia">Provincia:</label>
-    <input name="provincia" value="{{object.provincia}}" type="text" class="form-control" id="provincia" placeholder="Ingrese su provincia">
-  </div>
-  <div class="form-group">
-    <label for="localidad">Localidad:</label>
-    <input name="localidad" value="{{object.localidad}}" type="text" class="form-control" id="localidad" placeholder="Ingrese su localidad">
-  </div>
-  <div class="form-group">
-    <label for="codigo_postal">Código Postal:</label>
-    <input name="codigo_postal" value="{{object.codigo_postal}}" type="text" class="form-control" id="codigo_postal"
-      placeholder="Ingrese su código postal">
-  </div>
-
-
-  <div class="form-group">
-    <label for="celular">Celular:</label>
-    <input name="telefono" value="{{object.telefono}}" type="text" class="form-control" id="celular" placeholder="Ingrese su número de celular">
-  </div>
-  <div class="form-group">
-    <label for="especialidad">Especialidad:</label>
-    <input type="text" class="form-control" id="especialidad" placeholder="Ingrese la especialidad solo si corresponde">
-  </div>
-  <div class="form-group">
-    <label for="opciones">Tipo de Usuario:</label>
-    <select name="tipo_usuario" class="form-control" id="opciones">
-      <option value="">Seleccione que tipo de usuario está por Cargar</option>
-      <option value="administrador">Administrador</option>
-      <option value="veterinario">Veterinario/Peluquero</option>
-      <option value="propietario">Propietario</option>
-    </select>
-  </div>
+  {% include 'includes/formulario.html' %}
   <div class="form-group">
     <button type="submit" class="btn btn-secondary mx-5">Modificar</button>
   </div>

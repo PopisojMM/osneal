@@ -50,7 +50,7 @@ class Usuario(AbstractBaseUser,PermissionsMixin):
     nombre= models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False,help_text="Permite al usuario acceder al panel de administración")
     is_admin = models.BooleanField(default=False)
     email = models.EmailField("Correo electrónico", blank=True, unique=True)
     date_joined = models.DateTimeField("Fecha de login", default=timezone.now)
