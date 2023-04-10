@@ -9,17 +9,19 @@ class UserForm(forms.ModelForm):
         model = User
         fields = '__all__'
         exclude = ('password',
-                #    'groups', 
+                   'groups', 
                    'user_permissions', 
                    'last_login',
                    'is_admin',
                    'is_staff',
-                   'date_joined')
+                   'date_joined',
+                   'fecha_baja'
+                   )
         
         widgets = {
                         "nombre": forms.TextInput(attrs={'class': 'form-control'}),
                         "apellido": forms.TextInput(attrs={'class': 'form-control'}),
-                        "is_active": forms.CheckboxInput(),
+                        "is_active": forms.CheckboxInput(attrs={'class': 'mt-4',}),
                         "email": forms.EmailInput(attrs={'class': 'form-control'}),
                         "groups": forms.SelectMultiple(attrs={'class': 'form-control'}),
                         "dni": forms.TextInput(attrs={'class': 'form-control'}),
@@ -44,6 +46,4 @@ class UserForm(forms.ModelForm):
                         "observaciones": forms.Textarea(attrs={'class': 'form-control'}),
 
                     }
-
-        
 

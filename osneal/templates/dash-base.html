@@ -70,7 +70,7 @@
 
 
       <li>
-        <a href="{% url 'mascotas:historial' %}">
+        <a href="{% url 'mascotas:carga_historial' %}">
           <i class='bx bxs-id-card'></i>
           <span class="links_name">Historial Clinico</span>
         </a>
@@ -92,8 +92,8 @@
         <div class="user_details">
           <div class="name_job">
             {% if user.is_authenticated %}
-            <div class="name">{{user.username}}</div>
-            {% if user.tipo_usuario == propietario or user.is_staff %}
+            <div class="name">{{user.email}}</div>
+            {% if user.tipo_usuario.value == administrador %}
             <div class="job">Administrador</div>
             {% elif user.veterinario %}
             <div class="job">Veterinario</div>

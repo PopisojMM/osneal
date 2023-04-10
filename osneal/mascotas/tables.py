@@ -1,11 +1,6 @@
 import django_tables2 as tables
-from .models import Vacuna
+from .models import Vacuna, HistorialClinico
 
-
-class VacunaTable(tables.Table):
-    '''Tabla para mostrar las vacunas'''
-import django_tables2 as tables
-from .models import Vacuna
 
 
 class VacunaTable(tables.Table):
@@ -23,11 +18,11 @@ class VacunaTable(tables.Table):
         attrs = {"class": "table table-striped table-hover table-responsive",
                  }
 
-
-
+class HistorialTable(tables.Table):
     class Meta:
-        model = Vacuna
+        model = HistorialClinico
         template_name = 'django_tables2/bootstrap.html'
-        fields = ('mascota', 'tipo_vacuna', 'fecha_vacuna', 'fecha_proxima_vacuna', 'nro_vacuna')
+        fields = ('mascota', 'fecha_historial', 'diagnostico', 'tratamiento')
         attrs = {"class": "table table-striped table-hover table-responsive",
                  }
+

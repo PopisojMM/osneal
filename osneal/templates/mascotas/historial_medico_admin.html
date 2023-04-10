@@ -1,85 +1,20 @@
 {% extends 'dash-base.html' %}
-    <!-- COMIENZA CONTENIDO DEL MENU -->
-    
-    {% block contenido %}
+<!-- COMIENZA CONTENIDO DEL MENU -->
 
-    <div class="text">CARGA DE HISTORIALES CLINICOS</div>
-    
-    {{form.errors}}
-    <form method="POST" action="{% url 'mascotas:carga_historial' %}">
-      {% csrf_token %}
-    <div class="container">
-     <h2>Buscar Animal por Microchip</h2>
-     <div class="form-group card">
-       <div class="input-group mb-3">
-         <input name="microchip" type="text" id="microchip" class="form-control" placeholder="Ingrese el Microchip de la mascota">
-       </div>
+{% block contenido %}
 
-     </div>
-   </div>
-   <div class="container">
-     <h2>Historial Clínico de [Nombre del Animal]</h2>
+<div class="text">CARGA DE HISTORIALES CLINICOS</div>
 
-       <div class="form-group">
-         <label for="fecha">Fecha de Consulta:</label>
-         <input name="fecha_historial" type="date" class="form-control" id="fecha">
-       </div>
-       <div class="form-group">
-         <label for="diagnostico">Diagnóstico:</label>
-         <input name="diagnostico" type="text" class="form-control" id="diagnostico">
-       </div>
-       <div class="form-group">
-         <label for="tratamiento">Tratamiento Recetado:</label>
-         <textarea name="tratamiento" class="form-control" id="tratamiento"></textarea>
-       </div>
-       <button type="submit" class="btn btn-primary">Guardar</button>
-     </form>
-   </div>
+<form method="POST" action="{% url 'mascotas:carga_historial' %}">
+  {% csrf_token %}
+  {% include 'includes/mensajes.html' %}
+  {% include 'includes/formulario.html' %}
 
 
-   <script>
-    $(document).ready(function () {
-      $('#microchip').keyup(function () {
-        $('.list').remove()
-        $('.results').remove()
-        var query = $(this).val();
-        if (query.length >= 3) {
-          $.ajax({
-            url: `/mascotas/json_buscar_mascota/${query}`,
-            dataType: 'json',
-            success: function (data) {
-              data.forEach(element => {
-                var line = $('<div>').addClass("list border-bottom mb-2")
-                var div = $('<div>').addClass('d-flex align-items-center results');
-                var i = $('<i>').addClass('fas fa-users');
-                var div2 = $('<div>').addClass('d-flex flex-column ml-3');
-                var span = $('<span>').text(`${element.nombre}`);
-                var small = $('<small>').text(`${element.micro_chip}`);
-  
-                div.append(i);
-                div2.append(span, small);
-                div.append(div2);
-                // Ahora puedes agregar el elemento a algún contenedor en tu página, por ejemplo:
-                $('.card').append(line);
-                $('.card').append(div);
-              });
-  
-              $('.results').click(function () {
-                var microchip = $(this).find('small').text();
-                $('#microchip').val(microchip);
-                $('.list').remove()
-                $('.results').remove()
-              });
-            }
-          });
-        }
-      });
-    });
-  
-  
-  </script>
-    
-  {% endblock contenido %}
+  <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+</div>
 
 
 
+{% endblock contenido %}

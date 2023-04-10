@@ -1,14 +1,13 @@
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
 from mascotas.forms import MascotaForm,HistorialForm,VacunaForm
-from mascotas.models import Mascota,Vacuna
-from mascotas.tables import VacunaTable
+from mascotas.models import Mascota,Vacuna,HistorialClinico
+from mascotas.tables import VacunaTable, HistorialTable
 from usuarios.models import Usuario
 from django.urls import reverse_lazy
-from django.http import JsonResponse
 from dal import autocomplete
 from django_tables2 import SingleTableView
-from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 
@@ -83,29 +82,6 @@ class BuscarMascota(ListView):
         
 
 
-def json_buscar_mascota(request, microchip):
-    '''Metodo para buscar mascotas por microchip'''
-    data = {}
-    if request.method == 'GET':
-        data = Mascota.objects.filter(
-            micro_chip__contains=microchip)[:5].values(
-                'id',
-                'nombre',
-                'micro_chip',
-                'especie',
-                'raza',
-                'pelaje',
-                'tipo_plan',
-                'duenio__dni',
-                'edad',
-        )
-
-        if not data:
-            return JsonResponse(list(data), safe=False)
-
-        return JsonResponse(list(data), safe=False)
-
-
 class MascotasAutocomplete(autocomplete.Select2QuerySetView):
     '''Clase para autocompletar mascotas'''
     def get_queryset(self):
@@ -121,29 +97,40 @@ class MascotasAutocomplete(autocomplete.Select2QuerySetView):
 
 # HISTORIAL
 
-class CrearHistorial(CreateView):
+class CrearHistorial(SuccessMessageMixin,CreateView):
     '''Clase para crear historiales'''
     template_name = 'mascotas/historial_medico_admin.html'
     success_url = reverse_lazy('mascotas:carga_historial')
     form_class = HistorialForm
 
-    def post(self, request, *args, **kwargs):
-        '''crear el historial de la mascota'''
-        form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
-            print(request.POST.get("microchip"))
-            historial = form.save(commit=False)
-            # try:
-            historial.mascota = Mascota.objects.get(micro_chip=request.POST.get("microchip"))
-            # except:
-            # return render(request, self.template_name, {"form": form, "error": "El microchip ingresado no existes"})
-            historial.save()
-            return render(request, self.template_name, {'mensaje': 'Mascota creada correctamente'})
-        else:
-            return render(request, self.template_name, {"form": form})
-        
+class BorrarHistorial(SuccessMessageMixin,DeleteView):
+    '''Clase para eliminar historiales'''
+    model = Mascota
+    pk_url_kwarg = 'pk'
+    success_message = "Historial eliminado correctamente"
+    template_name = 'mascotas/carga_admin.html'
 
+    def get(self, request, *args, **kwargs):
+        self.delete(self, request, *args, **kwargs)
+        return render(request, self.template_name,)
     
+
+class EditarHistorialView(SuccessMessageMixin,UpdateView):
+    '''Clase para modificar historiales'''
+    model = Mascota
+    template_name = 'mascotas/historial_medico_admin.html'
+    form_class = HistorialForm
+    pk_url_kwarg = 'pk'
+    success_message = "Historial modificado correctamente"
+
+class ListarHistorialesView(SingleTableView):
+    '''Clase para listar historiales de una mascota'''
+    model = HistorialClinico
+    template_name = 'mascotas/listado_historiales.html'
+    table_class = HistorialTable
+ 
+
+
 
 # VACUNAS
 class CrearVacunaView(CreateView):
@@ -179,16 +166,9 @@ class EditarVacunaView(UpdateView):
     pk_url_kwarg = 'pk'
 
 
-class BorrarVacunaView(DeleteView):
+class BorrarVacunaView(SuccessMessageMixin,DeleteView):
     '''Clase para eliminar vacunas de una mascota'''
     model = Vacuna
     pk_url_kwarg = 'pk'
     success_message = "Vacuna eliminada correctamente"
     template_name = 'mascotas/vacunas_admin.html'
-
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        context = self.get_context_data(object=self.object)
-        self.object.delete()
-        messages.success(self.request, self.success_message)
-        return redirect('mascotas:carga_vacuna')
