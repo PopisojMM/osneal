@@ -22,7 +22,7 @@ class Mascota(models.Model):
     raza = models.CharField(max_length=250)
     pelaje = models.CharField( blank=True, null=True,max_length=250)
     fecha_nacimiento = models.DateField(null=True)
-    tipo_plan = models.CharField(max_length=250, choices=OPCIONES_TIPO_PLAN,default='Plan Base')
+    tipo_plan = models.CharField(max_length=250, choices=OPCIONES_TIPO_PLAN)
     fecha_ingreso = models.DateField(auto_now_add=True, null=True)
     fecha_modificacion = models.DateField(auto_now=True)
     fecha_baja = models.DateField(null=True)

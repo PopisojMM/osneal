@@ -87,50 +87,11 @@
 
 <div class="text">CARGA DE MASCOTAS A PROPIETARIOS</div>
 
-{% if mensaje %}
-<div class="alert alert-success" role="alert">
-  {{ mensaje }}
-</div>
-{% endif %}
-{{ form.errors }}
+
 <form method="POST">
   {% csrf_token %}
-  <div class="form-group card ">
-    <div class="form-group">
-      <label for="dni">DNI del Usuario Propietario:</label>
-      <input type="text" class="form-control" id="dni" name="dni" placeholder="Ingrese el DNI del usuario">
-    </div>
-
-  </div>
-  <div class="form-group">
-    <label for="nombre">Nombre de la mascota:</label>
-    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese el nombre de la mascota">
-  </div>
-  <div class="form-group">
-    <label for="microchip">Microchip:</label>
-    <input type="text" class="form-control" id="microchip" name="micro_chip"
-      placeholder="Ingrese el número de microchip">
-  </div>
-  <div class="form-group">
-    <label for="especie">Especie:</label>
-    <input type="text" class="form-control" id="especie" name="especie" placeholder="Ingrese la especie de la mascota">
-  </div>
-  <div class="form-group">
-    <label for="raza">Raza:</label>
-    <input type="text" class="form-control" id="raza" name="raza" placeholder="Ingrese la raza de la mascota">
-  </div>
-  <div class="form-group">
-    <label for="pelaje">Pelaje:</label>
-    <input type="text" class="form-control" id="pelaje" name="pelaje" placeholder="Ingrese el pelaje de la mascota">
-  </div>
-  <div class="form-group">
-    <label for="fecha-nacimiento">Fecha de nacimiento:</label>
-    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento">
-  </div>
-  <div class="form-group">
-    <label for="plan">Tipo de Plan:</label>
-    <input type="text" class="form-control" id="plan" name="tipo_plan" placeholder="Ingrese el tipo de Plan">
-  </div>
+  {% include 'includes/mensajes.html' %}
+  {% include 'includes/formulario.html' %}
 
   <button type="submit" class="btn btn-primary">Agregar mascota</button>
 </form>

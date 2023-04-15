@@ -73,3 +73,6 @@ class Usuario(AbstractBaseUser,PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['password']
 
+    def __str__(self):
+        return f'{self.dni} - {self.email}'
+

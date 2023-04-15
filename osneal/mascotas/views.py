@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
 from mascotas.forms import MascotaForm,HistorialForm,VacunaForm
 from mascotas.models import Mascota,Vacuna,HistorialClinico
@@ -16,26 +16,14 @@ from django.contrib.messages.views import SuccessMessageMixin
 # Create your views here.
 
 # MASCOTAS 
-class CrearMascota(CreateView):
+class CrearMascota(SuccessMessageMixin,CreateView):
     '''Clase para crear mascotas'''
     template_name = 'mascotas/carga_admin.html'
     success_url = reverse_lazy('mascotas:carga')
     form_class = MascotaForm
-    success_url = reverse_lazy('mascotas:index')
+    success_url = reverse_lazy('mascotas:carga')
+    success_message = "Mascota creada correctamente"
 
-    def post(self, request, *args, **kwargs):
-        '''Metodo para crear mascotas'''
-        form = self.form_class(request.POST, request.FILES)
-        if form.is_valid():
-            mascota = form.save(commit=False)
-            try:
-                mascota.duenio = Usuario.objects.get(dni=request.POST.get("dni"))
-            except:
-                return render(request, self.template_name, {"form": form, "error": "El DNI ingresado no existe"})
-            mascota.save()
-            return render(request, self.template_name, {'mensaje': 'Mascota creada correctamente'})
-        else:
-            return render(request, self.template_name, {"form": form})
 
 
 class BorrarMascota(DeleteView):

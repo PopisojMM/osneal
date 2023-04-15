@@ -7,9 +7,24 @@ from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+from dal import autocomplete
+
 
 
 Usuario = get_user_model()
+class UsuarioAutocomplete(autocomplete.Select2QuerySetView):
+    '''Clase para autocompletar mascotas'''
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Usuario.objects.none()
+
+        qs = Usuario.objects.all()
+
+        if self.q:
+            qs = qs.filter(dni__istartswith=self.q)
+
+        return qs
 
 # Usuarios
 

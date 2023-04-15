@@ -1,4 +1,4 @@
-from django.urls import path,include
+from django.urls import path,re_path
 from django.views.generic import TemplateView
 from .views import (
     UserLoginView,
@@ -7,7 +7,8 @@ from .views import (
     json_buscar_usuario,
     BuscarUsuarioView,
     EditarUsuarioView,
-    BorrarUsuarioView
+    BorrarUsuarioView,
+    UsuarioAutocomplete,
     )
 
 
@@ -22,6 +23,11 @@ urlpatterns = [
     path('buscar_usuario/', BuscarUsuarioView.as_view(),name='buscar_usuario'),
     path('<int:pk>/editar_usuario/', EditarUsuarioView.as_view(),name='editar_usuario'),
     path('<int:pk>/borrar_usuario/', BorrarUsuarioView.as_view(),name='borrar_usuario'),
+    re_path(
+        r'^usuario-autocomplete/$',
+        UsuarioAutocomplete.as_view(),
+        name='usuario-autocomplete',
+    ),
 
     path('turnos_admin/', TemplateView.as_view(template_name='turnos/admin/turnos_admin.html'),name='turnos_admin'),
 ]
