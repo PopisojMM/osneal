@@ -88,10 +88,10 @@ class EditarUsuarioView(PermissionRequiredMixin,SuccessMessageMixin,UpdateView):
     permission_required = 'usuarios.change_usuario'
     login_url = reverse_lazy('usuarios:login')
 
-    def get_queryset(self, request, *args, **kwargs):
+    def get_queryset(self, *args, **kwargs):
         '''Solo los usuarios admin pueden editar usuarios admin'''
         queryset = super().get_queryset()
-        if request.user.is_staff:
+        if self.request.user.is_staff:
             return queryset
         else:
             return queryset.exclude(is_staff=True)
@@ -133,13 +133,17 @@ class BuscarUsuarioView(PermissionRequiredMixin,ListView):
     context_object_name = 'usuarios'
     permission_required = 'usuarios.view_usuario'
 
-    def get_queryset(self):
+    def get_queryset(self, *args, **kwargs):
         '''Devuelve los usuarios que coincidan con el criterio de búsqueda'''
-        queryset = super().get_queryset().exclude(is_staff=True)
+        queryset = super().get_queryset()
         usuario_buscado = self.request.GET.get("dni_usuario",None)
         if usuario_buscado:
             queryset = queryset.filter(dni__contains=usuario_buscado)
-        return queryset
+        
+        if self.request.user.is_staff:
+            return queryset
+        else:
+            return queryset.exclude(is_staff=True)
     
 
 # TURNOS
