@@ -7,14 +7,17 @@ from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from dal import autocomplete
 
 
 
 Usuario = get_user_model()
-class UsuarioAutocomplete(autocomplete.Select2QuerySetView):
+class UsuarioAutocomplete(PermissionRequiredMixin,autocomplete.Select2QuerySetView):
     '''Clase para autocompletar mascotas'''
+    permission_required = 'usuarios.add_usuario'
+    login_url = reverse_lazy('usuarios:login')
+
     def get_queryset(self):
         if not self.request.user.is_authenticated:
             return Usuario.objects.none()
@@ -58,7 +61,7 @@ class UserLogoutView(LogoutView):
     next_page = reverse_lazy('usuarios:login')
 
 
-class CrearUsuarioView(SuccessMessageMixin,CreateView):
+class CrearUsuarioView(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
     '''Clase para crear usuarios.
     '''
 
@@ -67,10 +70,12 @@ class CrearUsuarioView(SuccessMessageMixin,CreateView):
     form_class = UserForm
     success_url = reverse_lazy('usuarios:crear_usuario')
     success_message = "Usuario creado correctamente"
+    permission_required = 'usuarios.add_usuario'
+    login_url = reverse_lazy('usuarios:login')
     
 
 
-class EditarUsuarioView(SuccessMessageMixin,UpdateView):
+class EditarUsuarioView(PermissionRequiredMixin,SuccessMessageMixin,UpdateView):
     '''Clase para editar usuarios.
     '''
     form_class = UserForm
@@ -78,15 +83,19 @@ class EditarUsuarioView(SuccessMessageMixin,UpdateView):
     queryset = Usuario.objects.all()
     success_url = reverse_lazy('usuarios:crear_usuario')
     success_message = "Usuario editado correctamente"
+    permission_required = 'usuarios.change_usuario'
+    login_url = reverse_lazy('usuarios:login')
 
 
 
 
-class BorrarUsuarioView(DeleteView):
+class BorrarUsuarioView(PermissionRequiredMixin,DeleteView):
     queryset = Usuario.objects.all()
     success_url = reverse_lazy('usuarios:crear_usuario')
     template_name = 'usuarios/carga_usuarios_admin.html'
-    pk_url_kwarg = 'pk'	
+    pk_url_kwarg = 'pk'
+    permission_required = 'usuarios.delete_usuario'
+    login_url = reverse_lazy('usuarios:login')
 
     def get(self, request, *args, **kwargs):
         self.delete(self, request, *args, **kwargs)
@@ -105,11 +114,12 @@ def json_buscar_usuario(request,dni):
 
     return JsonResponse(list(data),safe=False)
 
-class BuscarUsuarioView(ListView):
+class BuscarUsuarioView(PermissionRequiredMixin,ListView):
     '''Lista los usuarios que coincidan con el criterio de búsqueda'''
     template_name = 'usuarios/resultado_busqueda_usuarios.html'
     model = Usuario
     context_object_name = 'usuarios'
+    permission_required = 'usuarios.view_usuario'
 
     def get_queryset(self):
         '''Devuelve los usuarios que coincidan con el criterio de búsqueda'''
