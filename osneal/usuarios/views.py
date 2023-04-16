@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse
 from django.urls import reverse_lazy
@@ -9,6 +9,8 @@ from django.http import JsonResponse
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from dal import autocomplete
+from django.contrib import messages
+
 
 
 
@@ -22,7 +24,7 @@ class UsuarioAutocomplete(PermissionRequiredMixin,autocomplete.Select2QuerySetVi
         if not self.request.user.is_authenticated:
             return Usuario.objects.none()
 
-        qs = Usuario.objects.all()
+        qs = Usuario.objects.all().exclude(is_staff=True)
 
         if self.q:
             qs = qs.filter(dni__istartswith=self.q)
@@ -86,20 +88,30 @@ class EditarUsuarioView(PermissionRequiredMixin,SuccessMessageMixin,UpdateView):
     permission_required = 'usuarios.change_usuario'
     login_url = reverse_lazy('usuarios:login')
 
+    def get_queryset(self, request, *args, **kwargs):
+        '''Solo los usuarios admin pueden editar usuarios admin'''
+        queryset = super().get_queryset()
+        if request.user.is_staff:
+            return queryset
+        else:
+            return queryset.exclude(is_staff=True)
 
 
 
-class BorrarUsuarioView(PermissionRequiredMixin,DeleteView):
+
+class BorrarUsuarioView(PermissionRequiredMixin,SuccessMessageMixin,DeleteView):
     queryset = Usuario.objects.all()
     success_url = reverse_lazy('usuarios:crear_usuario')
-    template_name = 'usuarios/carga_usuarios_admin.html'
+    template_name = 'usuarios/asd.html'
     pk_url_kwarg = 'pk'
     permission_required = 'usuarios.delete_usuario'
     login_url = reverse_lazy('usuarios:login')
+    success_message = 'Usuario eliminado correctamente'
 
     def get(self, request, *args, **kwargs):
         self.delete(self, request, *args, **kwargs)
-        return render(request,self.template_name,{"mensaje":"Usuario eliminado correctamente"})
+        messages.add_message(request, messages.SUCCESS, self.success_message)
+        return redirect(self.success_url)
     
 
 def json_buscar_usuario(request,dni):
@@ -123,7 +135,7 @@ class BuscarUsuarioView(PermissionRequiredMixin,ListView):
 
     def get_queryset(self):
         '''Devuelve los usuarios que coincidan con el criterio de búsqueda'''
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().exclude(is_staff=True)
         usuario_buscado = self.request.GET.get("dni_usuario",None)
         if usuario_buscado:
             queryset = queryset.filter(dni__contains=usuario_buscado)

@@ -14,6 +14,7 @@ class UserForm(forms.ModelForm):
                    'last_login',
                    'is_admin',
                    'is_staff',
+                   'is_superuser',
                    'date_joined',
                    'fecha_baja'
                    )

@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,PermissionsMixin,Group
 from django.utils import timezone
 
 # Create your models here.
@@ -72,6 +72,15 @@ class Usuario(AbstractBaseUser,PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['password']
+
+    def save(self, *args, **kwargs):
+        if self.tipo_usuario == 'administrador':
+            self.is_superuser = True
+            super().save(*args, **kwargs)
+        else:
+            grupos = Group.objects.all()
+            self.user_set__groups = grupos.get(name=self.tipo_usuario)
+            super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.dni} - {self.email}'
