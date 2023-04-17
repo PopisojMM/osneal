@@ -39,23 +39,17 @@ class BorrarMascota(PermissionRequiredMixin,DeleteView):
         return render(request, self.template_name, {"mensaje": "Mascota eliminada correctamente"})
 
 
-class ModificarMascota(PermissionRequiredMixin,UpdateView):
+class ModificarMascota(PermissionRequiredMixin,SuccessMessageMixin,UpdateView):
     '''Clase para modificar mascotas'''
     model = Mascota
     template_name = 'mascotas/modificar.html'
     form_class = MascotaForm
     pk_url_kwarg = 'pk'
     permission_required = 'mascotas.change_mascota'
-    login_url = reverse_lazy('usuarios:login')	
+    login_url = reverse_lazy('usuarios:login')
+    success_url = reverse_lazy('mascotas:carga')
+    success_message = "Mascota modificada correctamente"
 
-
-    def form_valid(self, form):
-        """If the form is valid, save the associated model."""
-        self.object = form.save()
-        context = self.get_context_data()
-        context = {'mensaje': 'Mascota modificada correctamente'}
-        self.object = form.save()
-        return render(self.request, 'mascotas/carga_admin.html', context)
     
 
 class BuscarMascota(PermissionRequiredMixin,ListView):

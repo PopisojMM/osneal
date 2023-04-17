@@ -88,7 +88,7 @@
 <div class="text">CARGA DE MASCOTAS A PROPIETARIOS</div>
 
 
-<form method="POST">
+<form method="POST"  enctype="multipart/form-data">
   {% csrf_token %}
   {% include 'includes/mensajes.html' %}
   {% include 'includes/formulario.html' %}

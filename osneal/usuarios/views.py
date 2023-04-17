@@ -5,12 +5,12 @@ from django.urls import reverse_lazy
 from .forms import UserForm
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.contrib.auth import get_user_model
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponseRedirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from dal import autocomplete
 from django.contrib import messages
-
+from django.contrib.auth.models import Group
 
 
 
@@ -74,6 +74,26 @@ class CrearUsuarioView(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
     success_message = "Usuario creado correctamente"
     permission_required = 'usuarios.add_usuario'
     login_url = reverse_lazy('usuarios:login')
+
+
+    def form_valid(self, form):
+        '''Si el usuario es administrador, se le asigna el grupo de administradores'''
+        usuario = form.save(commit=False)
+        if usuario.tipo_usuario == 'administrador':
+            usuario.is_superuser = True
+            usuario.save()
+        else:
+            usuario.save()
+            grupo = Group.objects.get(name=usuario.tipo_usuario)
+            if grupo:
+                usuario.groups.add(grupo)
+            
+        usuario.set_password(usuario.dni)
+        messages.add_message(self.request, messages.SUCCESS, self.success_message)
+        return HttpResponseRedirect(self.success_url)
+
+
+                
     
 
 
@@ -95,6 +115,22 @@ class EditarUsuarioView(PermissionRequiredMixin,SuccessMessageMixin,UpdateView):
             return queryset
         else:
             return queryset.exclude(is_staff=True)
+        
+    def form_valid(self, form):
+        '''Si el usuario es administrador, se le asigna el grupo de administradores'''
+        usuario = form.save(commit=False)
+        usuario.groups.clear()
+        if usuario.tipo_usuario == 'administrador':
+            usuario.is_superuser = True
+            usuario.save()
+        else:
+            usuario.save()
+            grupo = Group.objects.get(name=usuario.tipo_usuario)
+            if grupo:
+                usuario.groups.add(grupo)
+            
+        messages.add_message(self.request, messages.SUCCESS, self.success_message)
+        return HttpResponseRedirect(self.success_url)
 
 
 

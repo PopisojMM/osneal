@@ -1,6 +1,7 @@
 from django.db import models
 from usuarios.models import Usuario
 from django.utils import timezone
+from config.settings.base import MEDIA_ROOT
 
 class Mascota(models.Model):
     '''Clase para las mascotas'''
@@ -28,6 +29,7 @@ class Mascota(models.Model):
     fecha_baja = models.DateField(null=True)
     activo = models.BooleanField(default=True)
     edad = models.IntegerField(blank=True, null=True)
+    foto = models.ImageField(upload_to='mascotas/', blank=True, null=True)
 
     def calcular_edad(self):
         '''Metodo para calcular la edad de la mascota'''
