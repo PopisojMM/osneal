@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
 from mascotas.forms import MascotaForm,HistorialForm,VacunaForm
 from mascotas.models import Mascota,Vacuna,HistorialClinico
-from mascotas.tables import VacunaTable, HistorialTable
+from mascotas.tables import VacunaTable, HistorialTable,VacunaTablePropietario
 from django.urls import reverse_lazy
 from dal import autocomplete
 from django_tables2 import SingleTableView
@@ -179,3 +179,48 @@ class BorrarVacunaView(PermissionRequiredMixin,SuccessMessageMixin,DeleteView):
     template_name = 'mascotas/vacunas_admin.html'
     permission_required = 'mascotas.delete_mascota'
     login_url = reverse_lazy('usuarios:login')
+
+
+class MisMascotasView(PermissionRequiredMixin,ListView):
+    '''Clase para listar las mascotas de un usuario'''
+    model = Mascota
+    template_name = 'vista_usuarios/mascotas_usuario.html'
+    context_object_name = 'mascotas'
+    permission_required = 'mascotas.view_mascota'
+    login_url = reverse_lazy('usuarios:login')	
+
+    def get_queryset(self):
+        '''Metodo para buscar mascotas'''
+        queryset = super().get_queryset()
+        busqueda = self.request.user
+        if busqueda:
+            return queryset.filter(duenio=busqueda)
+        else:
+            return queryset
+        
+class VacunasMisMascotasView(PermissionRequiredMixin,SingleTableView):
+    '''Clase para listar las vacunas de las mascotas de un usuario'''
+    model = Vacuna
+    template_name = 'vista_usuarios/listado_vacunas.html'
+    context_object_name = 'vacunas'
+    permission_required = 'mascotas.view_vacuna'
+    login_url = reverse_lazy('usuarios:login')
+    table_class = VacunaTablePropietario
+        
+
+class HistorialesMisMascotasView(PermissionRequiredMixin,ListView):
+    '''Clase para listar los historiales de las mascotas de un usuario'''
+    model = HistorialClinico
+    template_name = 'vista_usuarios/historial_usuario.html'
+    context_object_name = 'historiales'
+    permission_required = 'mascotas.view_historialclinico'
+    login_url = reverse_lazy('usuarios:login')
+
+    def get_queryset(self):
+        '''Metodo para buscar mascotas'''
+        queryset = super().get_queryset()
+        busqueda = self.request.user
+        if busqueda:
+            return queryset.filter(mascota__usuario=busqueda)
+        else:
+            return queryset

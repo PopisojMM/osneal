@@ -53,7 +53,7 @@ class UserLoginView(LoginView):
         if self.request.user.is_staff:
             return reverse('usuarios:crear_usuario')
         else:
-            return reverse('mascotas:index')
+            return reverse('mascotas:mis_mascotas')
 
 
 class UserLogoutView(LogoutView):
@@ -81,7 +81,6 @@ class CrearUsuarioView(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
         usuario = form.save(commit=False)
         if usuario.tipo_usuario == 'administrador':
             usuario.is_superuser = True
-            usuario.save()
         else:
             usuario.save()
             grupo = Group.objects.get(name=usuario.tipo_usuario)
@@ -89,6 +88,8 @@ class CrearUsuarioView(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
                 usuario.groups.add(grupo)
             
         usuario.set_password(usuario.dni)
+        usuario.save()
+
         messages.add_message(self.request, messages.SUCCESS, self.success_message)
         return HttpResponseRedirect(self.success_url)
 
