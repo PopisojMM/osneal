@@ -44,12 +44,12 @@ class UserChangeForm(forms.ModelForm):
         fields = ('email','nombre','apellido', 'password', 'is_active', 'is_admin')
 
 class UserAdmin(BaseUserAdmin):
-    list_display = ('email','nombre','apellido','is_admin')
+    list_display = ('email','nombre','apellido','is_admin',)
     list_filter = ('is_admin',)
     fieldsets = (
         (None, {'fields': ('email','password')}),
         ('Personal info', {'fields': ('nombre','apellido')}),
-        ('Permissions', {'fields': ('is_admin','is_staff','is_active')}),
+        ('Permissions', {'fields': ('is_superuser','is_admin','is_staff','is_active','groups')}),
     )
     add_fieldsets = (
         (None, {

@@ -44,6 +44,7 @@
 
     <ul class="nav_list">
 
+      {% if user.tipo_usuario != 'propietario' %}
       <li>
         <a href="{% url 'usuarios:crear_usuario' %}">
           <i class='bx bxs-user-plus'></i>
@@ -51,15 +52,22 @@
         </a>
         <span class="tooltip">Propietarios</span>
       </li>
+      {% endif %}
 
       <li>
-        <a href="{% url 'mascotas:carga' %}">
-          <i class='bx bxs-cat'></i>
-          <span class="links_name">Mascotas</span>
-        </a>
-        <span class="tooltip">Mascotas</span>
+        {% if user.tipo_usuario == 'propietario' %}
+        <a href="{% url 'mascotas:mis_mascotas' %}">
+          {% else %}
+          <a href="{% url 'mascotas:carga' %}">
+          {% endif %}
+            <i class='bx bxs-cat'></i>
+            <span class="links_name">Mascotas</span>
+          </a>
+          <span class="tooltip">Mascotas</span>
       </li>
 
+
+      {% if user.tipo_usuario is not 'propietario' %}
       <li>
         <a href="{% url 'usuarios:turnos_admin' %}">
           <i class='bx bxs-calendar-edit'></i>
@@ -67,10 +75,13 @@
         </a>
         <span class="tooltip">Turnos</span>
       </li>
+      {% endif %}
 
 
+      {% if user.tipo_usuario != 'propietario' %}
       <li>
         <a href="{% url 'mascotas:carga_historial' %}">
+          
           <i class='bx bxs-id-card'></i>
           <span class="links_name">Historial Clinico</span>
         </a>
@@ -84,6 +95,7 @@
         </a>
         <span class="tooltip">Vacunas</span>
       </li>
+      {% endif %}
       <!-- TERMINA LISTA DE OPCIONES DEL PANEL -->
       <!-- Footer del panel -->
     </ul>
@@ -93,9 +105,9 @@
           <div class="name_job">
             {% if user.is_authenticated %}
             <div class="name">{{user.email}}</div>
-            {% if user.tipo_usuario.value == administrador %}
+            {% if user.tipo_usuario.value == 'administrador' %}
             <div class="job">Administrador</div>
-            {% elif user.veterinario %}
+            {% elif user.tipo_usuario.value == 'Veterinario' %}
             <div class="job">Veterinario</div>
             {% else %}
             <div class="job">Propietario</div>

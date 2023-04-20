@@ -13,6 +13,11 @@ from .views import (
     ListarVacunasView,
     EditarVacunaView,
     BorrarVacunaView,
+
+    #Vistas para usuarios propietarios
+    MisMascotasView,
+    VacunasMisMascotasView,
+    HistorialesMisMascotasView,
     
     )
 
@@ -35,4 +40,9 @@ urlpatterns = [
     path('<int:pk>/listado_vacunas/', ListarVacunasView.as_view(),name='listado_vacunas'),
     path('<int:pk>/editar_vacuna/', EditarVacunaView.as_view(),name='editar_vacuna'),
     path('<int:pk>/borrar_vacuna/', BorrarVacunaView.as_view(),name='borrar_vacuna'),
+
+    #URLS PARA USUARIOS COMUNES
+    path('mis_mascotas/',MisMascotasView.as_view(),name='mis_mascotas'),
+    path('mis_mascotas/<int:pk>/vacunas',VacunasMisMascotasView.as_view(),name='mis_mascotas_vacunas'),
+    path('mis_mascotas/historial',TemplateView.as_view(template_name = 'vista_usuarios/historial_usuario.html'),name='mis_mascotas_historial')
     ]

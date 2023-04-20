@@ -5,6 +5,11 @@ User = get_user_model()
 
 class UserForm(forms.ModelForm):
     '''Formulario para crear un usuario'''
+    dni = forms.CharField(
+        max_length=15, 
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        )
     class Meta:
         model = User
         fields = '__all__'
@@ -14,6 +19,7 @@ class UserForm(forms.ModelForm):
                    'last_login',
                    'is_admin',
                    'is_staff',
+                   'is_superuser',
                    'date_joined',
                    'fecha_baja'
                    )
@@ -24,7 +30,6 @@ class UserForm(forms.ModelForm):
                         "is_active": forms.CheckboxInput(attrs={'class': 'mt-4',}),
                         "email": forms.EmailInput(attrs={'class': 'form-control'}),
                         "groups": forms.SelectMultiple(attrs={'class': 'form-control'}),
-                        "dni": forms.TextInput(attrs={'class': 'form-control'}),
                         "telefono": forms.TextInput(attrs={'class': 'form-control'}),
                         "direccion": forms.TextInput(attrs={'class': 'form-control'}),
                         "localidad": forms.TextInput(attrs={'class': 'form-control'}),

@@ -16,7 +16,8 @@ class MascotaForm(forms.ModelForm):
                    'edad'
                    )
         widgets = {
-                    "duenio": autocomplete.ModelSelect2(url=reverse_lazy('usuarios:usuario-autocomplete')),
+                    "duenio": autocomplete.ModelSelect2(url=reverse_lazy('usuarios:usuario-autocomplete'),
+                                                        ),
                     "nombre": forms.TextInput(attrs={'class': 'form-control w-50'}),
                     "micro_chip": forms.TextInput(attrs={'class': 'form-control w-50'}),
                     "especie": forms.TextInput(attrs={'class': 'form-control w-50'}),

@@ -5,44 +5,31 @@
 
     <div class="container">
       <h1>Mascotas</h1>
+  
+      
       <div class="row">
+        {% for mascota in mascotas  %}
         <!-- Creamos una tarjeta para cada mascota -->
         <div class="col-md-4">
           <div class="card">
+            
+            {% if mascota.foto %}
+            <img src="{{mascota.foto.url}}" class="card-img-top" alt="Imagen de la mascota">
+            {% else %}
             <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Imagen de la mascota">
+            {% endif %}
             <div class="card-body">
-              <h5 class="card-title">Mascota 1</h5>
-              <p class="card-text">Microchip: </p>
+              <h5 class="card-title">{{mascota.nombre}}</h5>
+              <p class="card-text">Microchip: {{mascota.micro_chip}} </p>
               <!-- Agregamos los botones para acceder al historial clínico y las vacunas -->
-              <a href="histclinmas.html" class="btn btn-primary">Historial Clínico</a>
-              <a href="vacunasmascotas.html" class="btn btn-secondary">Vacunas</a>
+              <a href="{% url 'mascotas:listado_historiales' mascota.pk %}" class="btn btn-primary">Historial Clínico</a>
+              <a href="{% url 'mascotas:mis_mascotas_vacunas'  mascota.pk %}" class="btn btn-secondary">Vacunas</a>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="card">
-            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Imagen de la mascota">
-            <div class="card-body">
-              <h5 class="card-title">Mascota 2</h5>
-              <p class="card-text">Microchip: </p>
-              <a href="histclinmas.html" class="btn btn-primary">Historial Clínico</a>
-              <a href="vacunasmascotas.html" class="btn btn-secondary">Vacunas</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card">
-            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Imagen de la mascota">
-            <div class="card-body">
-              <h5 class="card-title">Mascota 3</h5>
-              <p class="card-text">Microchip:</p>
-              <a href="histclinmas.html" class="btn btn-primary">Historial Clínico</a>
-              <a href="vacunasmascotas.html" class="btn btn-secondary">Vacunas</a>
-            </div>
-          </div>
-        </div>
-      </div>
+        {% endfor %}
     </div>
+
     
   {% endblock contenido %}
 
