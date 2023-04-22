@@ -19,7 +19,7 @@ certificatesResolvers:
   letsencrypt:
     # https://docs.traefik.io/master/https/acme/#lets-encrypt
     acme:
-      email: "osneal@osneal.com.ar"
+      email: "miroj@netsentrysecurity.com"
       storage: /etc/traefik/acme/acme.json
       # https://docs.traefik.io/master/https/acme/#httpchallenge
       httpChallenge:
@@ -28,7 +28,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: "Host(`osenal.com.ar`)"
+      rule: "Host(`clinicaveterinarianeal.com.ar`)"
       entryPoints:
         - web-secure
       middlewares:
