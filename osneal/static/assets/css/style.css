@@ -552,21 +552,12 @@ h2.h2-xl { font-size: 1.5rem; }     /* 24px */
     background-repeat: no-repeat;
     background-position: center center;
 }
-.bg-img-1{
-	background-image: url(../images/bg_1.jpg);
-	background-repeat: no-repeat;
-	background-position: center center;
-}
 .bg-img-7{
 	background-image: url(../images/counter_bg.jpg);
 	background-repeat: no-repeat;
 	background-position: top center !important;
 }
-.bg-img-8{
-	background-image: url(../images/bg_8.jpg);
-	background-repeat: no-repeat;
-	background-position: left center !important;
-}
+
 /*------------------------------------------*/
 /*    Background Images
 /*------------------------------------------*/
@@ -1795,12 +1786,6 @@ h2.h2-xl { font-size: 1.5rem; }     /* 24px */
 	border-radius: 0;
 	box-shadow: none;
 }
-.tracking.parallax{
-	background-image: url(../images/bg_5.jpg);
-    background-repeat: no-repeat;
-    background-position: center center !important;
-    padding-bottom: 100px;
-}
 
 /*------------------------------------------*/
 /*    Footer Subscribe
@@ -2571,17 +2556,7 @@ h2.h2-xl { font-size: 1.5rem; }     /* 24px */
 #mkdf-back-to-top:hover .mkdf-back-to-top-text {
     opacity: 0;
 }
-.scrollup {
-    width: 40px;
-    height: 40px;
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    display: none;
-    text-indent: -9999px;
-    background: url('icon_top.png') no-repeat;
-    background-color: #000;
-}
+
 .scrollup.open{
   display: block;
 }
@@ -2610,17 +2585,7 @@ h2.h2-xl { font-size: 1.5rem; }     /* 24px */
     border-radius: 5px;
     overflow: hidden;
 }
-.bg-with-text{
-    background: url(../images/bg-text.jpg) no-repeat center right;
-    background-size: cover;
-    border-radius: 5px;
-    text-align: center;
-    color: #FFF;
-    font-size: 1.125rem;
-    padding: 0 1.5rem;
-    font-weight: 300;
-    line-height: 2;
-}
+
 .video-popup-wrap{
     margin-top: 150px;
 }
@@ -2886,14 +2851,7 @@ h2.h2-xl { font-size: 1.5rem; }     /* 24px */
     color: var(--secondary-color);
     line-height: 1.375;
 }
-.client-testimonials-bg{
-    background-image: url(../images/bg_2.jpg);
-    background-repeat: no-repeat;
-    padding: 3rem;
-    text-align: center;
-    color: #FFF;
-    overflow: hidden;
-}
+
 .client-testimonials-bg .owl-carousel .owl-nav button.owl-prev, 
 .client-testimonials-bg .owl-carousel .owl-nav button.owl-next{
     color: #FFF;
@@ -3512,9 +3470,7 @@ h2.h2-xl { font-size: 1.5rem; }     /* 24px */
 .request_popup .close:hover{
     transform: rotate(360deg);
 }
-.request_popup .bg-img-7{
-    background-image: url(../images/bg_8.jpg);
-}
+
 .center-head {
     color: #202120;
     padding: 0;
@@ -4132,15 +4088,7 @@ footer .social-icons a:hover{
 /* Home Page Second Style */
 
 
-/*------------------------------------------*/
-/*    What We Offer Section
-/*------------------------------------------*/
-.what-we-offer{
-    background-image: url(../images/what_we_offer.jpg);
-    box-shadow: 0px 18px 76px 0px rgba(0, 0, 0, 0.06);
-    position: relative;
-    z-index: 99;
-}
+
 /* What We Offer Section */
 
 /*------------------------------------------*/
@@ -4464,17 +4412,7 @@ label.error {
 }
 
 
-@font-face {
-  font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?3d5ofa');
-  src:  url('fonts/icomoon.eot?3d5ofa#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?3d5ofa') format('truetype'),
-    url('fonts/icomoon.woff?3d5ofa') format('woff'),
-    url('fonts/icomoon.svg?3d5ofa#icomoon') format('svg');
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
-}
+
 
 [class*=" pethund_"], [class^=pethund_] {
   /* use !important to prevent issues with browser extensions that change fonts */
