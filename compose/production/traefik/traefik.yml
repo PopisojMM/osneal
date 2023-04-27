@@ -38,6 +38,16 @@ http:
         # https://docs.traefik.io/master/routing/routers/#certresolver
         certResolver: letsencrypt
 
+    web-media-router:
+      rule: "Host(`media.clinicaveterinarianeal.com.ar`)"
+      entryPoints:
+        - web-secure
+      middlewares:
+        - csrf
+      service: django-media
+      tls:
+        certResolver: letsencrypt
+
   middlewares:
     csrf:
       # https://docs.traefik.io/master/middlewares/headers/#hostsproxyheaders
@@ -50,6 +60,11 @@ http:
       loadBalancer:
         servers:
           - url: http://django:5000
+
+    django-media:
+      loadBalancer:
+        servers:
+          - url: http://nginx:80
 
 providers:
   # https://docs.traefik.io/master/providers/file/
