@@ -73,7 +73,7 @@
 <div class="text">GESTION DE MASCOTAS - OSNeAl</div>
 
 <div class="text">BUSCADOR DE MASCOTAS</div>
- 
+
   <div class="input-group mb-3">
     <form action="{% url 'mascotas:buscar' %}" method="GET">
       <input type="text" name="mirco_chip" class="form-control" placeholder="Ingrese el Microchip de la mascota">
@@ -86,11 +86,11 @@
 
 
 <div class="text">CARGA DE MASCOTAS A PROPIETARIOS</div>
+{% include 'includes/mensajes.html' %}
 
 
 <form method="POST"  enctype="multipart/form-data">
   {% csrf_token %}
-  {% include 'includes/mensajes.html' %}
   {% include 'includes/formulario.html' %}
 
   <button type="submit" class="btn btn-primary">Agregar mascota</button>

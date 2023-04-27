@@ -10,7 +10,7 @@
 <div class="container mt-4">
   <h1 class="mb-4">Vacunación de animales</h1>
 
-  <form action="{% url 'mascotas:carga_vacuna' %}" method="POST">
+  <form method="POST">
     {% csrf_token %}
     {% include 'includes/formulario.html' %}
 

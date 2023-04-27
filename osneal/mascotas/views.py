@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
-from mascotas.forms import MascotaForm,HistorialForm,VacunaForm
+from mascotas.forms import MascotaForm,HistorialForm,VacunaForm, EditarHistorialForm,EditarVacunaForm
 from mascotas.models import Mascota,Vacuna,HistorialClinico
 from mascotas.tables import VacunaTable, HistorialTable,VacunaTablePropietario
 from django.urls import reverse_lazy
@@ -8,10 +8,11 @@ from dal import autocomplete
 from django_tables2 import SingleTableView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib import messages
 
 
 
-# MASCOTAS 
+# MASCOTAS
 class CrearMascota(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
     '''Clase para crear mascotas'''
     template_name = 'mascotas/carga_admin.html'
@@ -20,7 +21,7 @@ class CrearMascota(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
     success_url = reverse_lazy('mascotas:carga')
     success_message = "Mascota creada correctamente"
     permission_required = 'mascotas.add_mascota'
-    login_url = reverse_lazy('usuarios:login')	
+    login_url = reverse_lazy('usuarios:login')
 
 
 
@@ -31,12 +32,14 @@ class BorrarMascota(PermissionRequiredMixin,DeleteView):
     template_name = 'mascotas/carga_admin.html'
     pk_url_kwarg = 'pk'
     permission_required = 'mascotas.delete_mascota'
-    login_url = reverse_lazy('usuarios:login')	
+    login_url = reverse_lazy('usuarios:login')
+    success_message = "Mascota eliminada correctamente"
 
 
     def get(self, request, *args, **kwargs):
         self.delete(self, request, *args, **kwargs)
-        return render(request, self.template_name, {"mensaje": "Mascota eliminada correctamente"})
+        messages.success(self.request, self.success_message)
+        return redirect('mascotas:carga')
 
 
 class ModificarMascota(PermissionRequiredMixin,SuccessMessageMixin,UpdateView):
@@ -50,7 +53,7 @@ class ModificarMascota(PermissionRequiredMixin,SuccessMessageMixin,UpdateView):
     success_url = reverse_lazy('mascotas:carga')
     success_message = "Mascota modificada correctamente"
 
-    
+
 
 class BuscarMascota(PermissionRequiredMixin,ListView):
     '''Clase para buscar mascotas'''
@@ -58,7 +61,7 @@ class BuscarMascota(PermissionRequiredMixin,ListView):
     template_name = 'mascotas/resultado_busqueda_mascotas.html'
     context_object_name = 'mascotas'
     permission_required = 'mascotas.view_mascota'
-    login_url = reverse_lazy('usuarios:login')	
+    login_url = reverse_lazy('usuarios:login')
 
 
     def get_queryset(self):
@@ -69,13 +72,13 @@ class BuscarMascota(PermissionRequiredMixin,ListView):
             return queryset.filter(micro_chip__contains=busqueda)
         else:
             return queryset
-        
+
 
 
 class MascotasAutocomplete(PermissionRequiredMixin,autocomplete.Select2QuerySetView):
     '''Clase para autocompletar mascotas'''
     permission_required = 'mascotas.add_mascota'
-    login_url = reverse_lazy('usuarios:login')	
+    login_url = reverse_lazy('usuarios:login')
 
     def get_queryset(self):
         if not self.request.user.is_authenticated:
@@ -96,12 +99,14 @@ class CrearHistorial(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
     success_url = reverse_lazy('mascotas:carga_historial')
     form_class = HistorialForm
     permission_required = 'mascotas.add_historialclinico'
-    login_url = reverse_lazy('usuarios:login')	
+    login_url = reverse_lazy('usuarios:login')
+    success_message = "Historial creado correctamente"
 
-class BorrarHistorial(PermissionRequiredMixin,SuccessMessageMixin,DeleteView):
+class BorrarHistorialVew(PermissionRequiredMixin,SuccessMessageMixin,DeleteView):
     '''Clase para eliminar historiales'''
-    model = Mascota
+    model = HistorialClinico
     pk_url_kwarg = 'pk'
+    success_url = reverse_lazy('mascotas:buscar')
     success_message = "Historial eliminado correctamente"
     template_name = 'mascotas/carga_admin.html'
     permission_required = 'mascotas.delete_historialclinico'
@@ -109,18 +114,20 @@ class BorrarHistorial(PermissionRequiredMixin,SuccessMessageMixin,DeleteView):
 
     def get(self, request, *args, **kwargs):
         self.delete(self, request, *args, **kwargs)
-        return render(request, self.template_name,)
-    
+        messages.success(self.request, self.success_message)
+        return redirect('mascotas:carga')
+
 
 class EditarHistorialView(PermissionRequiredMixin,SuccessMessageMixin,UpdateView):
     '''Clase para modificar historiales'''
-    model = Mascota
+    model = HistorialClinico
     template_name = 'mascotas/historial_medico_admin.html'
-    form_class = HistorialForm
+    form_class = EditarHistorialForm
     pk_url_kwarg = 'pk'
     success_message = "Historial modificado correctamente"
     permission_required = 'mascotas.change_historialclinico'
-    login_url = reverse_lazy('usuarios:login')	
+    login_url = reverse_lazy('usuarios:login')
+    success_url = reverse_lazy('mascotas:carga')
 
 class ListarHistorialesView(PermissionRequiredMixin,SingleTableView):
     '''Clase para listar historiales de una mascota'''
@@ -130,16 +137,26 @@ class ListarHistorialesView(PermissionRequiredMixin,SingleTableView):
     permission_required = 'mascotas.change_historialclinico'
     login_url = reverse_lazy('usuarios:login')
 
+    def get_queryset(self):
+        '''Metodo para buscar mascotas'''
+        queryset = super().get_queryset()
+        busqueda = self.kwargs.get('pk',None)
+        if busqueda:
+            return queryset.filter(mascota__id=busqueda)
+        else:
+            return queryset
+
 
 
 # VACUNAS
-class CrearVacunaView(PermissionRequiredMixin,CreateView):
+class CrearVacunaView(PermissionRequiredMixin,SuccessMessageMixin,CreateView):
     '''Clase para crear vacunas'''
     template_name = 'mascotas/vacunas_admin.html'
     success_url = reverse_lazy('mascotas:carga')
     form_class = VacunaForm
     permission_required = 'mascotas.add_vacuna'
-    login_url = reverse_lazy('usuarios:login')	
+    login_url = reverse_lazy('usuarios:login')
+    success_message = "Vacuna cargada correctamente"
 
 class ListarVacunasView(PermissionRequiredMixin,SingleTableView):
     '''Clase para listar vacunas de una mascota'''
@@ -148,7 +165,7 @@ class ListarVacunasView(PermissionRequiredMixin,SingleTableView):
     context_object_name = 'vacunas'
     table_class = VacunaTable
     permission_required = 'mascotas.view_vacuna'
-    login_url = reverse_lazy('usuarios:login')	
+    login_url = reverse_lazy('usuarios:login')
 
     def get_queryset(self):
         '''Metodo para buscar mascotas'''
@@ -159,16 +176,18 @@ class ListarVacunasView(PermissionRequiredMixin,SingleTableView):
             return queryset.filter(mascota=busqueda)
         else:
             return queryset
-        
 
-class EditarVacunaView(PermissionRequiredMixin,UpdateView):
+
+class EditarVacunaView(PermissionRequiredMixin,SuccessMessageMixin,UpdateView):
     '''Clase para listar vacunas de una mascota'''
     model = Vacuna
     template_name = 'mascotas/vacunas_admin.html'
-    form_class = VacunaForm
+    form_class = EditarVacunaForm
     pk_url_kwarg = 'pk'
     permission_required = 'mascotas.change_vacuna'
     login_url = reverse_lazy('usuarios:login')
+    success_url = reverse_lazy('mascotas:carga')
+    success_message = "Vacuna modificada correctamente"
 
 
 class BorrarVacunaView(PermissionRequiredMixin,SuccessMessageMixin,DeleteView):
@@ -176,9 +195,15 @@ class BorrarVacunaView(PermissionRequiredMixin,SuccessMessageMixin,DeleteView):
     model = Vacuna
     pk_url_kwarg = 'pk'
     success_message = "Vacuna eliminada correctamente"
+    success_url = reverse_lazy('mascotas:carga')
     template_name = 'mascotas/vacunas_admin.html'
     permission_required = 'mascotas.delete_mascota'
     login_url = reverse_lazy('usuarios:login')
+
+    def get(self, request, *args, **kwargs):
+        self.delete(self, request, *args, **kwargs)
+        messages.success(self.request, self.success_message)
+        return redirect('mascotas:carga')
 
 
 class MisMascotasView(PermissionRequiredMixin,ListView):
@@ -187,7 +212,7 @@ class MisMascotasView(PermissionRequiredMixin,ListView):
     template_name = 'vista_usuarios/mascotas_usuario.html'
     context_object_name = 'mascotas'
     permission_required = 'mascotas.view_mascota'
-    login_url = reverse_lazy('usuarios:login')	
+    login_url = reverse_lazy('usuarios:login')
 
     def get_queryset(self):
         '''Metodo para buscar mascotas'''
@@ -197,7 +222,7 @@ class MisMascotasView(PermissionRequiredMixin,ListView):
             return queryset.filter(duenio=busqueda)
         else:
             return queryset
-        
+
 class VacunasMisMascotasView(PermissionRequiredMixin,SingleTableView):
     '''Clase para listar las vacunas de las mascotas de un usuario'''
     model = Vacuna
@@ -206,7 +231,7 @@ class VacunasMisMascotasView(PermissionRequiredMixin,SingleTableView):
     permission_required = 'mascotas.view_vacuna'
     login_url = reverse_lazy('usuarios:login')
     table_class = VacunaTablePropietario
-        
+
 
 class HistorialesMisMascotasView(PermissionRequiredMixin,ListView):
     '''Clase para listar los historiales de las mascotas de un usuario'''
@@ -224,3 +249,4 @@ class HistorialesMisMascotasView(PermissionRequiredMixin,ListView):
             return queryset.filter(mascota__usuario=busqueda)
         else:
             return queryset
+
