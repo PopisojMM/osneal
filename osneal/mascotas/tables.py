@@ -43,3 +43,13 @@ class HistorialTable(tables.Table):
         attrs = {"class": "table table-striped table-hover table-responsive",
                  }
 
+class HistorialTablePropietario(tables.Table):
+    '''Tabla para mostrar los historiales clinicos'''
+
+    class Meta:
+        model = HistorialClinico
+        template_name = 'django_tables2/bootstrap.html'
+        fields = ('mascota', 'fecha_historial', 'diagnostico', 'tratamiento')
+        attrs = {"class": "table table-striped table-hover table-responsive",
+                 }
+

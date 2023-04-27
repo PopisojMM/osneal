@@ -2,13 +2,14 @@ from django.shortcuts import render,redirect
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
 from mascotas.forms import MascotaForm,HistorialForm,VacunaForm, EditarHistorialForm,EditarVacunaForm
 from mascotas.models import Mascota,Vacuna,HistorialClinico
-from mascotas.tables import VacunaTable, HistorialTable,VacunaTablePropietario
+from mascotas.tables import VacunaTable, HistorialTable,VacunaTablePropietario,HistorialTablePropietario
 from django.urls import reverse_lazy
 from dal import autocomplete
 from django_tables2 import SingleTableView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib import messages
+
 
 
 
@@ -232,21 +233,26 @@ class VacunasMisMascotasView(PermissionRequiredMixin,SingleTableView):
     login_url = reverse_lazy('usuarios:login')
     table_class = VacunaTablePropietario
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset.filter(mascota__duenio=self.request.user)
+        return queryset
 
-class HistorialesMisMascotasView(PermissionRequiredMixin,ListView):
+
+class HistorialesMisMascotasView(PermissionRequiredMixin,SingleTableView):
     '''Clase para listar los historiales de las mascotas de un usuario'''
     model = HistorialClinico
     template_name = 'vista_usuarios/historial_usuario.html'
-    context_object_name = 'historiales'
     permission_required = 'mascotas.view_historialclinico'
     login_url = reverse_lazy('usuarios:login')
+    table_class = HistorialTablePropietario
 
-    def get_queryset(self):
-        '''Metodo para buscar mascotas'''
+    def get_queryset(self,**kwargs):
         queryset = super().get_queryset()
-        busqueda = self.request.user
-        if busqueda:
-            return queryset.filter(mascota__usuario=busqueda)
-        else:
-            return queryset
+        queryset.filter(mascota__duenio=self.request.user)
+        return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['mascota'] = Mascota.objects.get(duenio=self.request.user)
+        return context

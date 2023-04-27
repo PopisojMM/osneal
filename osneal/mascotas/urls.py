@@ -50,6 +50,6 @@ urlpatterns = [
 
     #URLS PARA USUARIOS COMUNES
     path('mis_mascotas/',MisMascotasView.as_view(),name='mis_mascotas'),
-    path('mis_mascotas/<int:pk>/vacunas',VacunasMisMascotasView.as_view(),name='mis_mascotas_vacunas'),
-    path('mis_mascotas/historial',TemplateView.as_view(template_name = 'vista_usuarios/historial_usuario.html'),name='mis_mascotas_historial')
+    path('mis_mascotas/vacunas',VacunasMisMascotasView.as_view(),name='mis_mascotas_vacunas'),
+    path('mis_mascotas/historial',HistorialesMisMascotasView.as_view(),name='mis_mascotas_historial')
     ]
