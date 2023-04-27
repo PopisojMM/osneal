@@ -39,7 +39,7 @@ http:
         certResolver: letsencrypt
 
     web-media-router:
-      rule: "Host(`media.clinicaveterinarianeal.com.ar`)"
+      rule: "Host(`clinicaveterinarianeal.com.ar`)  && PathPrefix(`/media/`)"
       entryPoints:
         - web-secure
       middlewares:
