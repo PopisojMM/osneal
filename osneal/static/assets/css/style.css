@@ -3808,7 +3808,7 @@ footer .social-icons a:hover{
 }
 
 .header-top .header-fullpage{
-    background: transparent;
+    background: rgba(0, 0, 0, 0.214);
 }
 .header-blue #shopping-bag,
 .home-shop #shopping-bag,
@@ -3823,7 +3823,7 @@ footer .social-icons a:hover{
     background-color: var(--secondary-color);
 }
 .header-blue .top-bar-right{
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.214);
     color: #FFF;
 }
 .header-blue .top-bar-right a,
