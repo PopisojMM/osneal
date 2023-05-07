@@ -3853,7 +3853,7 @@ footer .social-icons a:hover{
         z-index: 1020;
     }
     .header-blue .fixed{
-        background:rgb(129, 50, 239);
+        background:rgb(0, 0, 0);
         box-shadow: 0px 0px 43px 0px rgba(152, 203, 70, 0.28);
     }
     .header-fullpage.fixed .top-bar-right{
