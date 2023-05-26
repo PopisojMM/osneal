@@ -39,13 +39,14 @@ class Mascota(models.Model):
             if hoy < timezone.datetime(hoy.year, self.fecha_nacimiento.month, self.fecha_nacimiento.day).date():
                 edad -= 1
             self.edad =  edad
-    
+
     def save(self, *args, **kwargs):
         '''Metodo para guardar la edad de la mascota'''
         self.calcular_edad()
         super(Mascota, self).save(*args, **kwargs)
 
     def __str__(self):
+
         return self.micro_chip + ' - ' + self.nombre
 
 

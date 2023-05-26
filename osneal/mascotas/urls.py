@@ -11,6 +11,7 @@ from .views import (
     BorrarHistorialVew,
     CrearVacunaView,
     MascotasAutocomplete,
+    MascotasByDniAutocomplete,
     ListarVacunasView,
     EditarVacunaView,
     BorrarVacunaView,
@@ -39,11 +40,6 @@ urlpatterns = [
 
     # VACUNAS ADMIN
     path('carga_vacuna/', CrearVacunaView.as_view(),name='carga_vacuna'),
-    re_path(
-        r'^mascotas-autocomplete/$',
-        MascotasAutocomplete.as_view(),
-        name='mascotas-autocomplete',
-    ),
     path('<int:pk>/listado_vacunas/', ListarVacunasView.as_view(),name='listado_vacunas'),
     path('<int:pk>/editar_vacuna/', EditarVacunaView.as_view(),name='editar_vacuna'),
     path('<int:pk>/borrar_vacuna/', BorrarVacunaView.as_view(),name='borrar_vacuna'),
@@ -51,5 +47,18 @@ urlpatterns = [
     #URLS PARA USUARIOS COMUNES
     path('mis_mascotas/',MisMascotasView.as_view(),name='mis_mascotas'),
     path('mis_mascotas/vacunas',VacunasMisMascotasView.as_view(),name='mis_mascotas_vacunas'),
-    path('mis_mascotas/historial',HistorialesMisMascotasView.as_view(),name='mis_mascotas_historial')
+    path('mis_mascotas/historial',HistorialesMisMascotasView.as_view(),name='mis_mascotas_historial'),
+
+    # AUTOCOMPLETE
+    re_path(
+        r'^mascotas-autocomplete/$',
+        MascotasAutocomplete.as_view(),
+        name='mascotas-autocomplete',
+    ),
+    re_path(
+        r'^mascotas-by-dni-autocomplete/$',
+        MascotasByDniAutocomplete.as_view(),
+        name='mascotas-by-dni-autocomplete',
+    ),
+
     ]

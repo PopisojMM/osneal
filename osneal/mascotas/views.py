@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
 from mascotas.forms import MascotaForm,HistorialForm,VacunaForm, EditarHistorialForm,EditarVacunaForm
 from mascotas.models import Mascota,Vacuna,HistorialClinico
+from usuarios.models import Usuario
 from mascotas.tables import VacunaTable, HistorialTable,VacunaTablePropietario,HistorialTablePropietario
 from django.urls import reverse_lazy
 from dal import autocomplete
@@ -89,6 +90,23 @@ class MascotasAutocomplete(PermissionRequiredMixin,autocomplete.Select2QuerySetV
 
         if self.q:
             qs = qs.filter(micro_chip__istartswith=self.q)
+
+        return qs
+
+
+class MascotasByDniAutocomplete(PermissionRequiredMixin,autocomplete.Select2QuerySetView):
+    '''Clase para autocompletar mascotas por dni'''
+    permission_required = 'mascotas.add_mascota'
+    login_url = reverse_lazy('usuarios:login')
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Mascota.objects.none()
+
+        qs = Mascota.objects.all()
+
+        if self.q:
+            qs = qs.filter(duenio__dni=self.q)
 
         return qs
 

@@ -2,7 +2,7 @@ from django.urls import path,re_path
 from django.views.generic import TemplateView
 from .views import (
     UserLoginView,
-    UserLogoutView, 
+    UserLogoutView,
     CrearUsuarioView,
     json_buscar_usuario,
     BuscarUsuarioView,

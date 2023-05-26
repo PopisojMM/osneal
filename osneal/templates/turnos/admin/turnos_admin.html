@@ -3,32 +3,33 @@
 
 {% block encabezado %}
 <!-- fullcalendar -->
+{% csrf_token %}
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js'></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"
+  integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+<script src='fullcalendar/core/index.global.js'></script>
+<script src='fullcalendar/core/locales/es.global.js'></script>
+<style>
+  .ui-autocomplete {
+    z-index: 1050 !important;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-      selectable: true,
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay',
-      },
-      dateClick: function (info) {
-        alert('clicked ' + info.dateStr);
-      },
-      select: function (info) {
-        alert('selected ' + info.startStr + ' to ' + info.endStr)
-      }
-    });
-    calendar.render();
+  .ui-autocomplete li {
+    list-style: none;
+    padding: 5px;
+    cursor: pointer;
+  }
 
-
-  });
-
-
-</script>
+  .ui-autocomplete li:hover {
+    background-color: #f5f5f5;
+  }
+</style>
 {% endblock encabezado %}
 
 
@@ -36,6 +37,151 @@
 
 <div class="text">Turnos</div>
 <div id='calendar'></div>
+<!-- HTML del modal con el formulario -->
+<div id="myModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">Asignar turno</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="myForm">
+          <!-- <strong>Buscar por:</strong>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="buscar_por" id="check_mascota" value="mascota" >
+            <label class="form-check-label" for="check_mascota">
+              Microchip Mascota
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="buscar_por" id="check_duenio" value="duenio" checked>
+            <label class="form-check-label" for="check_duenio">
+              DNI Dueño
+            </label>
+          </div> -->
+          <div class="">
+            <label for="titulo">Descripción corta del turno</label>
+            <input type="text" id="titulo" name="titulo" class="form-control">
+          </div>
+          <div class="ui-widget">
+            <label for="buscar">Microchip:</label>
+            <input type="text" id="buscar" name="buscar" class="form-control">
 
+          </div>
+          <div class="">
+            <label for="tipo_turno">Tipo de turno</label>
+            <input type="text" id="tipo_turno" name="tipo_turno" class="form-control">
+          </div>
+          <div class="">
+            <label for="start">Fecha y Hora de inicio</label>
+            <input type="datetime-local" id="start" name="start" class="form-control">
+          </div>
+          <div class="">
+            <label for="end">Fecha y Hora de fin</label>
+            <input type="datetime-local" id="end" name="end" class="form-control">
+          </div>
+          <div class="">
+            <label for="descripcion">Descripción</label>
+            <textarea name="descripcion" id="descripcion" cols="30" rows="5"></textarea>
+          </div>
+          <!-- Otros campos del formulario -->
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="saveButton">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+  $(document).ready(function () {
+
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      locale: 'es',
+      buttonText: {
+          today: 'Hoy', // Traducción del botón "Today"
+          month: 'Mes', // Traducción del botón "Month"
+        },
+      events: [
+        {
+          id: '1',
+          title: 'Evento 1',
+          start: '2023-05-25T13:00:00',
+          end: '2023-05-25T14:30:00',
+        },
+        {
+          id: '2',
+          title: 'Evento 1',
+          start: '2023-05-25T11:00:00',
+          end: '2023-05-25T12:30:00',
+        },
+
+      ],
+      // selectable: true,
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        // right: 'dayGridMonth,timeGridWeek,timeGridDay',
+        right: 'dayGridMonth,',
+
+      },
+      dateClick: function (info) {
+        $('#myModal').modal('show') // initializes and invokes show immediately
+        $('#start').val(`${info.dateStr}T00:00:00`)
+        $('#end').val(`${info.dateStr}T00:00:00`)
+
+      },
+      // select: function (info) {
+      //   $('#myModal').modal('show') // initializes and invokes show immediately
+      //   $('#start').val(info.startStr)
+      //   $('#end').val(info.endStr)
+      // }
+    });
+    calendar.render();
+
+    // Capturar el evento keyup en el campo de búsqueda
+    $('#buscar').on('keyup', function () {
+      var inputText = $(this).val(); // Obtener el texto ingresado en el campo de búsqueda
+      var url_busqueda = '/mascotas/mascotas-autocomplete'
+      // if ($('#check_duenio').is(':checked')) {
+      //   url_busqueda = '/mascotas/mascotas-by-dni-autocomplete'
+      // }
+
+      // Realizar una solicitud AJAX para obtener las opciones dinámicas
+      $.ajax({
+        url: `${url_busqueda}/?q=${inputText}`,
+        type: 'GET',
+        dataType: 'json',
+        data: { search: inputText }, // Enviar el texto ingresado como parámetro de búsqueda
+        success: function (response) {
+
+          var options = response.results.map(function (result) {
+            return result.text;
+          });
+          // Inicializar el autocompletado con las opciones dinámicas
+          $('#buscar').autocomplete({
+            source: options // Utilizar la respuesta del servidor como fuente de opciones
+          });
+        },
+        error: function (error) {
+          console.error(error);
+        }
+      });
+
+
+
+
+    });
+  });
+
+</script>
 
 {% endblock contenido %}
