@@ -27,6 +27,10 @@
   .ui-autocomplete li:hover {
     background-color: #f5f5f5;
   }
+
+  #calendar {
+    height: 90vh;
+  }
 </style>
 {% endblock encabezado %}
 
@@ -86,6 +90,53 @@
   </div>
 </div>
 
+<div id="DetailModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">Detalle de Turno</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="">
+          <label for="detalle_descripcion_corta">Descripción corta del turno</label>
+          <input type="text" id="detalle_descripcion_corta" name="detalle_descripcion_corta" class="form-control"
+            readonly>
+        </div>
+        <div class="ui-widget">
+          <label for="detalle_mascota">Nombre de la mascota:</label>
+          <input type="text" id="detalle_mascota" name="detalle_mascota" class="form-control" readonly>
+
+        </div>
+        <div class="">
+          <label for="detalle_tipo_turno">Tipo de turno</label>
+          <input type="text" id="detalle_tipo_turno" name="detalle_tipo_turno" class="form-control" readonly>
+        </div>
+        <div class="">
+          <label for="detalle_inicio">Fecha y Hora de inicio</label>
+          <input type="datetime-local" id="detalle_inicio" name="detalle_inicio" class="form-control" readonly>
+        </div>
+        <div class="">
+          <label for="detalle_fin">Fecha y Hora de fin</label>
+          <input type="datetime-local" id="detalle_fin" name="detalle_fin" class="form-control" readonly>
+        </div>
+        <div class="">
+          <label for="detalle_descripcion">Descripción</label>
+          <textarea name="detalle_descripcion" id="detalle_descripcion" cols="30" rows="5" readonly></textarea>
+        </div>
+        <!-- Otros campos del formulario -->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="deleteButton">Borrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
 
@@ -104,13 +155,11 @@
 
     const cargar_eventos = () => {
       $.ajax({
-        url: '/turnos/obtener_turnos/',
+        url: '/turnos/obtener_turnos_admin/',
         type: 'GET',
         dataType: 'json',
         success: function (response) {
-          var eventos = response.map(function (result) {
-            return result;
-          });
+          console.log(response)
           calendar.removeAllEvents();  // Eliminar todos los eventos actuales
           calendar.addEventSource(response);  // Agregar los nuevos eventos
           calendar.refetchEvents();  // Volver a cargar los eventos en el calendario
@@ -120,6 +169,48 @@
         }
       });
     }
+
+    const borrar_evento = (id_turno) => {
+      $.ajax({
+        url: '/turnos/borrar_turnos_admin/',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          'id_turno': id_turno,
+          'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        success: function (response) {
+          new jBox('Notice', {
+            content: "Turno borrado correctamente.",
+            color: 'green',
+            autoClose: 5000
+          });
+          cargar_eventos()
+          $('#DetailModal').modal('hide');
+          $('#formulario').trigger('reset');
+        },
+        error: function (error) {
+          new jBox('Notice', {
+            content: "No se pudo borrar el turno.",
+            color: 'red',
+            autoClose: 5000
+          });
+        }
+      });
+    }
+
+    $('#deleteButton').on('click', function () {
+      var info = $(this).data('info');
+      new jBox('Confirm', {
+        content: "¿Está seguro que desea borrar el turno?",
+        confirmButton: 'Si',
+        cancelButton: 'No',
+        confirm: function () {
+          borrar_evento(info.event.id);
+        }
+      }).open();
+    });
+
 
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -141,9 +232,32 @@
         $('#fin').val(`${info.dateStr}T00:00:00`)
 
       },
+      eventClick: function (info) {
+        console.log(info.event.id)
+        inicio = info.event.startStr
+        inicio = new Date(inicio)
+        inicio.setHours(inicio.getHours() - 3)
+        inicio = inicio.toISOString().slice(0, 16);
+        fin = info.event.endStr
+        fin = new Date(fin)
+        fin.setHours(fin.getHours() - 3)
+        fin = fin.toISOString().slice(0, 16);
+
+        $('#DetailModal').modal('show') // initializes and invokes show immediately
+        $('#detalle_descripcion_corta').val(info.event.title)
+        $('#detalle_mascota').val(info.event.extendedProps.mascota)
+        $('#detalle_tipo_turno').val(info.event.extendedProps.tipo_turno)
+        console.log(info.event.startStr)
+        $('#detalle_inicio').val(inicio)
+        $('#detalle_fin').val(fin)
+        $('#detalle_descripcion').val(info.event.extendedProps.descripcion)
+
+        $('#deleteButton').data('info', info);
+      }
 
     });
     calendar.render();
+    cargar_eventos();
 
     // Capturar el evento keyup en el campo de búsqueda
     $('#mascota').on('keyup', function () {
@@ -190,6 +304,7 @@
           $('#myModal').modal('hide');
           calendar.refetchEvents();
           $('#formulario').trigger('reset');
+          cargar_eventos();
 
         },
         error: function (error) {

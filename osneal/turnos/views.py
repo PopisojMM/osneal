@@ -3,8 +3,10 @@ from django.http import JsonResponse
 from .models import Turno
 from .forms import TurnoForm
 from mascotas.models import Mascota
+from django.contrib.auth.decorators import login_required, permission_required
 
-
+@login_required
+@permission_required('turnos.add_turno',raise_exception=True)
 def crear_turno(request):
     if request.method == 'POST':
 
@@ -19,8 +21,11 @@ def crear_turno(request):
 
         mascota = Mascota.objects.filter(micro_chip=microchip).first()
 
+        if not mascota:
+            return JsonResponse({"mensaje" : {"Error":"El número de microchip no existe"}},status=400)
+
         request.POST._mutable = True
-        request.POST['mascota'] = mascota.pk #este era el problema ver como solucionar
+        request.POST['mascota'] = mascota.pk
         form = TurnoForm(request.POST, initial={'mascota': mascota})
 
         if not form.is_valid():
@@ -30,4 +35,41 @@ def crear_turno(request):
 
         return JsonResponse({},status=201)
     else:
-        return JsonResponse({},status=400)
+        return JsonResponse({"mensaje":"Este método no está permitido"},status=403)
+
+
+@login_required
+@permission_required('turnos.view_turno',raise_exception=True)
+def obtener_turnos(request):
+    if request.method == 'GET':
+        turnos = Turno.objects.all()
+        turnos_json = []
+        for turno in turnos:
+            turnos_json.append({
+                'id': turno.pk,
+                'mascota': turno.mascota.nombre,
+                'title': turno.descripcion_corta,
+                'descripcion': turno.descripcion,
+                'tipo_turno': turno.tipo_turno,
+                'start': turno.inicio.strftime("%Y-%m-%dT%H:%M:%S"),
+                'end': turno.fin.strftime("%Y-%m-%dT%H:%M:%S")
+            })
+        return JsonResponse(turnos_json,status=200,safe=False)
+    else:
+        return JsonResponse({"mensaje":"Este método no está permitido"},status=403)
+
+
+@login_required
+@permission_required('turnos.delete_turno',raise_exception=True)
+def borrar_turno(request):
+    if request.method == 'POST':
+        id_turno = request.POST.get('id_turno')
+        print(id_turno)
+        turno = Turno.objects.filter(pk=id_turno).first()
+        if turno:
+            turno.delete()
+            return JsonResponse({},status=200)
+        else:
+            return JsonResponse({"mensaje" : {"Error":"El turno no existe"}},status=400)
+    else:
+        return JsonResponse({"mensaje":"Este método no está permitido"},status=403)
