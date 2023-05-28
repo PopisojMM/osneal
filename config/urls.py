@@ -11,6 +11,7 @@ urlpatterns = [
     path('usuarios/', include('usuarios.urls')),
     path('mascotas/', include('mascotas.urls')),
     path('', TemplateView.as_view(template_name='index.html'),name='index'),
+    path('turnos/', include('turnos.urls')),
 
 
     # Your stuff: custom urls includes go here
