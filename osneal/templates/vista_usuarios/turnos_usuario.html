@@ -1,0 +1,173 @@
+{% extends 'dash-base.html' %}
+
+
+{% block encabezado %}
+<!-- fullcalendar -->
+
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js'></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"
+  integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+<style>
+  .ui-autocomplete {
+    z-index: 1050 !important;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .ui-autocomplete li {
+    list-style: none;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  .ui-autocomplete li:hover {
+    background-color: #f5f5f5;
+  }
+
+  #calendar {
+    height: 90vh;
+  }
+</style>
+{% endblock encabezado %}
+
+
+{% block contenido %}
+{% csrf_token %}
+
+
+<div class="text">Turnos</div>
+<div id='calendar'></div>
+
+<div id="DetailModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">Detalle de Turno</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="">
+          <label for="detalle_descripcion_corta">Descripción corta del turno</label>
+          <input type="text" id="detalle_descripcion_corta" name="detalle_descripcion_corta" class="form-control"
+            readonly>
+        </div>
+        <div class="ui-widget">
+          <label for="detalle_mascota">Nombre de la mascota:</label>
+          <input type="text" id="detalle_mascota" name="detalle_mascota" class="form-control" readonly>
+
+        </div>
+        <div class="">
+          <label for="detalle_tipo_turno">Tipo de turno</label>
+          <input type="text" id="detalle_tipo_turno" name="detalle_tipo_turno" class="form-control" readonly>
+        </div>
+        <div class="">
+          <label for="detalle_inicio">Fecha y Hora de inicio</label>
+          <input type="datetime-local" id="detalle_inicio" name="detalle_inicio" class="form-control" readonly>
+        </div>
+        <div class="">
+          <label for="detalle_fin">Fecha y Hora de fin</label>
+          <input type="datetime-local" id="detalle_fin" name="detalle_fin" class="form-control" readonly>
+        </div>
+        <div class="">
+          <label for="detalle_descripcion">Descripción</label>
+          <textarea name="detalle_descripcion" id="detalle_descripcion" cols="30" rows="5" readonly></textarea>
+        </div>
+        <!-- Otros campos del formulario -->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+  $(document).ready(function () {
+
+    const NOMBRES_CAMPO = {
+      "descripcion_corta": "Descripción corta del turno",
+      "mascota": "Microchip de mascota",
+      "tipo_turno": "Tipo de turno",
+      "inicio": "Fecha y Hora de inicio",
+      "fin": "Fecha y Hora de fin",
+      "descripcion": "Descripción",
+      "Error": "Error",
+      "__all__": "Error",
+    }
+
+    const cargar_eventos = () => {
+      $.ajax({
+        url: '/turnos/obtener_turnos_admin/',
+        type: 'GET',
+        dataType: 'json',
+        success: function (response) {
+          console.log(response)
+          calendar.removeAllEvents();  // Eliminar todos los eventos actuales
+          calendar.addEventSource(response);  // Agregar los nuevos eventos
+          calendar.refetchEvents();  // Volver a cargar los eventos en el calendario
+        },
+        error: function (error) {
+          console.error(error);
+        }
+      });
+    }
+
+
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      locale: 'es',
+      buttonText: {
+        today: 'Hoy',
+        month: 'Mes',
+      },
+      // selectable: true,
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,',
+
+      },
+      eventClick: function (info) {
+        console.log(info.event.id)
+        inicio = info.event.startStr
+        inicio = new Date(inicio)
+        inicio.setHours(inicio.getHours() - 3)
+        inicio = inicio.toISOString().slice(0, 16);
+        fin = info.event.endStr
+        fin = new Date(fin)
+        fin.setHours(fin.getHours() - 3)
+        fin = fin.toISOString().slice(0, 16);
+
+        $('#DetailModal').modal('show') // initializes and invokes show immediately
+        $('#detalle_descripcion_corta').val(info.event.title)
+        $('#detalle_mascota').val(info.event.extendedProps.mascota)
+        $('#detalle_tipo_turno').val(info.event.extendedProps.tipo_turno)
+        console.log(info.event.startStr)
+        $('#detalle_inicio').val(inicio)
+        $('#detalle_fin').val(fin)
+        $('#detalle_descripcion').val(info.event.extendedProps.descripcion)
+
+      }
+
+    });
+    calendar.render();
+    cargar_eventos();
+
+
+
+
+
+  });
+
+</script>
+
+{% endblock contenido %}

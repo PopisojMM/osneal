@@ -69,14 +69,23 @@
       </li>
 
 
-      {% if user.tipo_usuario is not 'propietario' %}
+      {% if user.tipo_usuario == 'Administrador' or user.is_admin %}
       <li>
-        <a href="{% url 'usuarios:turnos_admin' %}">
+        <a href="{% url 'turnos:turnos_admin' %}">
           <i class='bx bxs-calendar-edit'></i>
           <span class="links_name">Turnos</span>
         </a>
         <span class="tooltip">Turnos</span>
       </li>
+      {% else %}
+      <li>
+        <a href="{% url 'turnos:turnos_usuario' %}">
+          <i class='bx bxs-calendar-edit'></i>
+          <span class="links_name">Turnos</span>
+        </a>
+        <span class="tooltip">Turnos</span>
+      </li>
+
       {% endif %}
 
 
@@ -107,7 +116,7 @@
           <div class="name_job">
             {% if user.is_authenticated %}
             <div class="name">{{user.email}}</div>
-            {% if user.tipo_usuario.value == 'administrador' %}
+            {% if user.tipo_usuario.value == 'Administrador' or user.is_admin %}
             <div class="job">Administrador</div>
             {% elif user.tipo_usuario.value == 'Veterinario' %}
             <div class="job">Veterinario</div>

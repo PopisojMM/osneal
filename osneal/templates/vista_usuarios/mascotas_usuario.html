@@ -1,4 +1,5 @@
 {% extends 'dash-base.html' %}
+{% load static %}
     <!-- COMIENZA CONTENIDO DEL MENU -->
 
     {% block contenido %}
@@ -16,14 +17,14 @@
             {% if mascota.foto %}
             <img src="{{mascota.foto.url}}" class="card-img-top" alt="Imagen de la mascota">
             {% else %}
-            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Imagen de la mascota">
+            <img src="{% static 'images/default_img.png' %}" class="card-img-top" alt="Imagen de la mascota">
             {% endif %}
             <div class="card-body">
               <h5 class="card-title">{{mascota.nombre}}</h5>
               <p class="card-text">Microchip: {{mascota.micro_chip}} </p>
               <!-- Agregamos los botones para acceder al historial clínico y las vacunas -->
-              <a href="{% url 'mascotas:mis_mascotas_historial' %}" class="btn btn-primary">Historial Clínico</a>
-              <a href="{% url 'mascotas:mis_mascotas_vacunas'  %}" class="btn btn-secondary">Vacunas</a>
+              <a href="{% url 'mascotas:mis_mascotas_historial' mascota.pk %}" class="btn btn-primary">Historial Clínico</a>
+              <a href="{% url 'mascotas:mis_mascotas_vacunas' mascota.pk  %}" class="btn btn-secondary">Vacunas</a>
             </div>
           </div>
         </div>

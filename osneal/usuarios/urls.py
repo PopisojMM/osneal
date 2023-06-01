@@ -29,7 +29,6 @@ urlpatterns = [
         name='usuario-autocomplete',
     ),
 
-    path('turnos_admin/', TemplateView.as_view(template_name='turnos/admin/turnos_admin.html'),name='turnos_admin'),
 ]
 
 

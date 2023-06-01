@@ -43,6 +43,9 @@ def crear_turno(request):
 def obtener_turnos(request):
     if request.method == 'GET':
         turnos = Turno.objects.all()
+        print(request.user.tipo_usuario)
+        if request.user.tipo_usuario == 'propietario':
+            turnos = turnos.filter(mascota__duenio=request.user)
         turnos_json = []
         for turno in turnos:
             turnos_json.append({

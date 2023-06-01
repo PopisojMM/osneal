@@ -252,8 +252,10 @@ class VacunasMisMascotasView(PermissionRequiredMixin,SingleTableView):
     table_class = VacunaTablePropietario
 
     def get_queryset(self):
+        pk = self.kwargs.get('pk')
         queryset = super().get_queryset()
-        queryset.filter(mascota__duenio=self.request.user)
+        queryset = queryset.filter(mascota__duenio=self.request.user).filter(mascota__id=pk)
+
         return queryset
 
 
@@ -267,10 +269,6 @@ class HistorialesMisMascotasView(PermissionRequiredMixin,SingleTableView):
 
     def get_queryset(self,**kwargs):
         queryset = super().get_queryset()
-        queryset.filter(mascota__duenio=self.request.user)
+        queryset = queryset.filter(mascota__duenio=self.request.user).filter(mascota__id=self.kwargs.get('pk'))
         return queryset
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['mascota'] = Mascota.objects.get(duenio=self.request.user)
-        return context
