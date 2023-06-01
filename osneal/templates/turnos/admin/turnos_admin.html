@@ -64,8 +64,12 @@
           </div>
           <div class="">
             <label for="tipo_turno">Tipo de turno</label>
-            <input type="text" id="tipo_turno" name="tipo_turno" class="form-control">
+            <select class="form-control" id="tipo_turno" name="tipo_turno">
+              <option value="Veterinaria" selected>Veterinaria</option>
+              <option value="Peluqueria">Peluquería</option>
+            </select>
           </div>
+
           <div class="">
             <label for="inicio">Fecha y Hora de inicio</label>
             <input type="datetime-local" id="inicio" name="inicio" class="form-control" required>
